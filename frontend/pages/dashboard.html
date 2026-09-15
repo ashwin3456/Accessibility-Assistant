@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>DeafAssist Dashboard</title>
 
 <style>
-
-/* ============================= */
-/* BASIC */
-/* ============================= */
-
 * {
     margin: 0;
     padding: 0;
@@ -30,99 +23,57 @@ body {
     color: #172033;
 }
 
-
-/* ============================= */
-/* HAMBURGER BUTTON */
-/* ============================= */
+/* ================= HAMBURGER ================= */
 
 .menu-toggle {
-
     position: fixed;
-
     top: 20px;
     left: 20px;
-
     width: 50px;
     height: 50px;
-
     background: #111827;
     color: white;
-
     border: none;
     border-radius: 10px;
-
     font-size: 27px;
-
     cursor: pointer;
-
     z-index: 1000;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
 }
 
 .menu-toggle:hover {
     background: #2563eb;
 }
 
-
-/* ============================= */
-/* SIDE MENU */
-/* ============================= */
+/* ================= SIDE MENU ================= */
 
 .side-menu {
-
     position: fixed;
-
     top: 0;
     left: -290px;
-
     width: 290px;
     height: 100vh;
-
     background: #111827;
-
     color: white;
-
     padding: 25px 18px;
-
     z-index: 1001;
-
-    transition: left 0.3s ease;
-
+    transition: 0.3s;
     box-shadow: 5px 0 20px rgba(0,0,0,0.25);
-
 }
 
 .side-menu.open {
     left: 0;
 }
 
-
-/* ============================= */
-/* MENU HEADER */
-/* ============================= */
-
 .menu-header {
-
     display: flex;
-
-    align-items: center;
-
     justify-content: space-between;
-
+    align-items: center;
     margin-bottom: 40px;
-
 }
 
 .logo {
-
     font-size: 22px;
-
     font-weight: 700;
-
 }
 
 .logo span {
@@ -130,117 +81,61 @@ body {
 }
 
 .close-menu {
-
     background: transparent;
-
     color: white;
-
     border: none;
-
     font-size: 30px;
-
     cursor: pointer;
-
 }
-
-.close-menu:hover {
-    color: #60a5fa;
-}
-
-
-/* ============================= */
-/* MENU ITEMS */
-/* ============================= */
 
 .menu {
     list-style: none;
 }
 
 .menu li {
-
-    padding: 15px 16px;
-
+    padding: 15px;
     margin-bottom: 8px;
-
     border-radius: 10px;
-
     cursor: pointer;
-
     color: #cbd5e1;
-
-    font-size: 16px;
-
     display: flex;
-
-    align-items: center;
-
     gap: 12px;
-
-    transition: 0.2s;
-
+    align-items: center;
 }
 
 .menu li:hover {
-
     background: #2563eb;
-
     color: white;
-
 }
 
-
-/* ============================= */
-/* MENU OVERLAY */
-/* ============================= */
+/* ================= OVERLAY ================= */
 
 .menu-overlay {
-
     position: fixed;
-
     inset: 0;
-
     background: rgba(0,0,0,0.5);
-
     z-index: 1000;
-
     display: none;
-
 }
 
 .menu-overlay.active {
     display: block;
 }
 
-
-/* ============================= */
-/* MAIN */
-/* ============================= */
+/* ================= MAIN ================= */
 
 .main {
-
-    margin-left: 0;
-
     padding: 30px;
-
     padding-top: 90px;
-
 }
 
-
-/* ============================= */
-/* HEADER */
-/* ============================= */
+/* ================= HEADER ================= */
 
 .header {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-bottom: 25px;
-
 }
 
 .header h1 {
@@ -248,142 +143,76 @@ body {
 }
 
 .header p {
-
     color: #64748b;
-
     margin-top: 5px;
-
 }
 
 .profile {
-
     display: flex;
-
     align-items: center;
-
     gap: 12px;
+}
 
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
 }
 
 .avatar {
-
     width: 45px;
-
     height: 45px;
-
     border-radius: 50%;
-
     background: #2563eb;
-
     color: white;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     font-weight: bold;
-
 }
 
-
-/* ============================= */
-/* STATUS */
-/* ============================= */
-
-.status {
-
-    background: #dcfce7;
-
-    color: #15803d;
-
-    padding: 8px 14px;
-
-    border-radius: 20px;
-
-    font-size: 13px;
-
-}
-
-
-/* ============================= */
-/* HERO */
-/* ============================= */
+/* ================= HERO ================= */
 
 .hero {
-
     background: linear-gradient(135deg, #2563eb, #4f46e5);
-
     color: white;
-
     padding: 28px;
-
     border-radius: 18px;
-
     margin-bottom: 25px;
-
 }
 
 .hero h2 {
-
-    font-size: 24px;
-
     margin-bottom: 8px;
-
 }
 
-.hero p {
-    opacity: 0.9;
-}
-
-
-/* ============================= */
-/* CARDS */
-/* ============================= */
+/* ================= CARDS ================= */
 
 .grid {
-
     display: grid;
-
     grid-template-columns: repeat(3, 1fr);
-
     gap: 18px;
-
 }
 
 .card {
-
     background: white;
-
     border-radius: 16px;
-
     padding: 22px;
-
     box-shadow: 0 5px 18px rgba(0,0,0,0.06);
-
     cursor: pointer;
-
     transition: 0.2s;
-
     border: 2px solid transparent;
-
 }
 
 .card:hover {
-
     transform: translateY(-4px);
-
     border-color: #2563eb;
-
 }
 
 .card-icon {
-
     font-size: 35px;
-
     margin-bottom: 15px;
-
 }
 
 .card h3 {
@@ -391,37 +220,21 @@ body {
 }
 
 .card p {
-
     color: #64748b;
-
     font-size: 14px;
-
     line-height: 1.5;
-
 }
 
 .card-button {
-
     margin-top: 15px;
-
     background: #2563eb;
-
     color: white;
-
     border: none;
-
     padding: 10px 15px;
-
     border-radius: 8px;
-
-    cursor: pointer;
-
 }
 
-
-/* ============================= */
-/* SECTIONS */
-/* ============================= */
+/* ================= SECTIONS ================= */
 
 .section {
     margin-top: 30px;
@@ -431,113 +244,64 @@ body {
     margin-bottom: 15px;
 }
 
-
-/* ============================= */
-/* CAPTIONS */
-/* ============================= */
+/* ================= CAPTIONS ================= */
 
 .caption-box {
-
     background: #111827;
-
     color: white;
-
     border-radius: 16px;
-
     padding: 25px;
-
 }
 
 .caption-status {
-
     color: #60a5fa;
-
-    font-size: 13px;
-
     margin-bottom: 15px;
-
 }
 
 .caption-text {
-
     background: #1f2937;
-
     padding: 20px;
-
     border-radius: 12px;
-
     font-size: 22px;
-
     min-height: 80px;
-
 }
 
 .caption-controls {
     margin-top: 15px;
 }
 
-
-/* ============================= */
-/* BUTTONS */
-/* ============================= */
-
 button {
-
     border: none;
-
     padding: 11px 18px;
-
     border-radius: 8px;
-
     cursor: pointer;
-
     font-weight: 600;
-
 }
 
 .start {
-
     background: #2563eb;
-
     color: white;
-
 }
 
 .stop {
-
     background: #dc2626;
-
     color: white;
-
 }
 
-
-/* ============================= */
-/* SOUND ALERTS */
-/* ============================= */
+/* ================= ALERTS ================= */
 
 .alert-list {
-
     display: grid;
-
     grid-template-columns: repeat(3, 1fr);
-
     gap: 15px;
-
 }
 
 .alert {
-
     background: white;
-
     padding: 18px;
-
     border-radius: 12px;
-
     border-left: 5px solid #f59e0b;
-
     box-shadow: 0 3px 12px rgba(0,0,0,0.05);
-
 }
 
 .alert.emergency {
@@ -549,36 +313,22 @@ button {
 }
 
 .alert-title {
-
     font-weight: 700;
-
     margin-bottom: 5px;
-
 }
 
 .alert-time {
-
     font-size: 12px;
-
     color: #64748b;
-
 }
 
-
-/* ============================= */
-/* ANNOUNCEMENT */
-/* ============================= */
+/* ================= ANNOUNCEMENT ================= */
 
 .announcement {
-
     background: white;
-
     padding: 22px;
-
     border-radius: 15px;
-
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-
 }
 
 .announcement strong {
@@ -586,96 +336,63 @@ button {
 }
 
 .announcement-text {
-
     margin-top: 10px;
-
     font-size: 18px;
-
 }
 
-
-/* ============================= */
-/* COMMUNICATION */
-/* ============================= */
+/* ================= COMMUNICATION ================= */
 
 .communication {
-
     display: flex;
-
     gap: 15px;
-
     margin-top: 15px;
-
 }
 
-.communication input {
-
-    flex: 1;
-
-    padding: 14px;
-
-    border: 1px solid #cbd5e1;
-
-    border-radius: 9px;
-
-    font-size: 15px;
-
-}
-
-
-/* ============================= */
-/* MODAL */
-/* ============================= */
+/* ================= MODAL ================= */
 
 .modal {
-
     display: none;
-
     position: fixed;
-
     inset: 0;
-
     background: rgba(0,0,0,0.6);
-
     align-items: center;
-
     justify-content: center;
-
     z-index: 2000;
-
 }
 
 .modal-box {
-
     background: white;
-
     width: 90%;
-
     max-width: 500px;
-
     padding: 28px;
-
     border-radius: 18px;
-
 }
 
 .close {
-
     float: right;
-
     font-size: 25px;
-
     cursor: pointer;
-
 }
 
+/* ================= SETTINGS ================= */
 
-/* ============================= */
-/* RESPONSIVE */
-/* ============================= */
+.setting-option {
+    display: block;
+    padding: 10px 0;
+}
+
+.logout-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #b91c1c;
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media(max-width: 900px) {
-
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -683,12 +400,9 @@ button {
     .alert-list {
         grid-template-columns: 1fr;
     }
-
 }
 
-
 @media(max-width: 600px) {
-
     .main {
         padding: 15px;
         padding-top: 85px;
@@ -709,75 +423,41 @@ button {
     .communication {
         flex-direction: column;
     }
-
-    .menu-toggle {
-
-        width: 45px;
-        height: 45px;
-
-        top: 15px;
-        left: 15px;
-
-    }
-
 }
-
 </style>
-
 </head>
 
 
 <body>
 
+<!-- ================= HAMBURGER ================= -->
 
-<!-- ============================= -->
-<!-- HAMBURGER BUTTON -->
-<!-- ============================= -->
-
-<button
-    class="menu-toggle"
-    onclick="toggleMenu()">
-
+<button class="menu-toggle" onclick="toggleMenu()">
     ☰
-
 </button>
 
 
-<!-- ============================= -->
-<!-- OVERLAY -->
-<!-- ============================= -->
+<!-- ================= OVERLAY ================= -->
 
 <div
     class="menu-overlay"
     id="menuOverlay"
     onclick="toggleMenu()">
-
 </div>
 
 
-<!-- ============================= -->
-<!-- SIDE MENU -->
-<!-- ============================= -->
+<!-- ================= MENU ================= -->
 
-<aside
-    class="side-menu"
-    id="sideMenu">
-
+<aside class="side-menu" id="sideMenu">
 
     <div class="menu-header">
 
         <div class="logo">
-
             ♿ Deaf<span>Assist</span>
-
         </div>
 
-        <button
-            class="close-menu"
-            onclick="toggleMenu()">
-
+        <button class="close-menu" onclick="toggleMenu()">
             ×
-
         </button>
 
     </div>
@@ -785,85 +465,44 @@ button {
 
     <ul class="menu">
 
-
         <li onclick="navigateMenu('dashboard')">
-
             🏠
-
-            <span>
-                Dashboard
-            </span>
-
+            <span>Dashboard</span>
         </li>
-
 
         <li onclick="navigateMenu('captions')">
-
             🎤
-
-            <span>
-                Live Captions
-            </span>
-
+            <span>Live Captions</span>
         </li>
-
 
         <li onclick="navigateMenu('alerts')">
-
             🔔
-
-            <span>
-                Sound Alerts
-            </span>
-
+            <span>Sound Alerts</span>
         </li>
-
 
         <li onclick="navigateMenu('announcements')">
-
             📢
-
-            <span>
-                Announcements
-            </span>
-
+            <span>Announcements</span>
         </li>
-
 
         <li onclick="navigateMenu('communication')">
-
             💬
-
-            <span>
-                Communication
-            </span>
-
+            <span>Communication</span>
         </li>
-
 
         <li onclick="openSettings()">
-
             ⚙️
-
-            <span>
-                Settings
-            </span>
-
+            <span>Settings</span>
         </li>
-
 
     </ul>
 
 </aside>
 
 
-<!-- ============================= -->
-<!-- MAIN -->
-<!-- ============================= -->
+<!-- ================= MAIN ================= -->
 
-<main
-    class="main"
-    id="dashboard">
+<main class="main" id="dashboard">
 
 
     <!-- HEADER -->
@@ -886,16 +525,11 @@ button {
         <div class="profile">
 
             <div class="status">
-
                 ● Assistant Active
-
             </div>
 
-
             <div class="avatar">
-
                 DA
-
             </div>
 
         </div>
@@ -912,263 +546,162 @@ button {
         </h2>
 
         <p>
-
             Your assistant is monitoring important
             environmental sounds and converting them
             into visual information.
-
         </p>
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- FEATURE CARDS -->
-    <!-- ============================= -->
+    <!-- ================= FEATURE CARDS ================= -->
 
     <section class="grid">
 
 
-        <!-- LIVE CAPTIONS -->
+        <div class="card" onclick="startCaptions()">
 
-        <div
-            class="card"
-            onclick="startCaptions()">
+            <div class="card-icon">🎤</div>
 
-            <div class="card-icon">
-                🎤
-            </div>
-
-            <h3>
-                Live Captions
-            </h3>
+            <h3>Live Captions</h3>
 
             <p>
-
                 Convert spoken conversations into
                 readable text in real time.
-
             </p>
 
             <button class="card-button">
-
                 Start Captions
-
             </button>
 
         </div>
 
 
-        <!-- SOUND ALERTS -->
+        <div class="card" onclick="detectSound()">
 
-        <div
-            class="card"
-            onclick="detectSound()">
+            <div class="card-icon">🔔</div>
 
-            <div class="card-icon">
-                🔔
-            </div>
-
-            <h3>
-                Sound Alerts
-            </h3>
+            <h3>Sound Alerts</h3>
 
             <p>
-
                 Detect important sounds and show
                 visual notifications.
-
             </p>
 
             <button class="card-button">
-
                 Check Sounds
-
             </button>
 
         </div>
 
 
-        <!-- EMERGENCY -->
+        <div class="card" onclick="emergencyAlert()">
 
-        <div
-            class="card"
-            onclick="emergencyAlert()">
+            <div class="card-icon">🚨</div>
 
-            <div class="card-icon">
-                🚨
-            </div>
-
-            <h3>
-                Emergency Alerts
-            </h3>
+            <h3>Emergency Alerts</h3>
 
             <p>
-
                 Receive visual warnings for alarms,
                 sirens and emergency sounds.
-
             </p>
 
             <button class="card-button">
-
                 Emergency Mode
-
             </button>
 
         </div>
 
 
-        <!-- ANNOUNCEMENT -->
+        <div class="card" onclick="announcement()">
 
-        <div
-            class="card"
-            onclick="announcement()">
+            <div class="card-icon">📢</div>
 
-            <div class="card-icon">
-                📢
-            </div>
-
-            <h3>
-                Announcements
-            </h3>
+            <h3>Announcements</h3>
 
             <p>
-
                 Convert public announcements into
                 easy-to-read text.
-
             </p>
 
             <button class="card-button">
-
                 View Announcements
-
             </button>
 
         </div>
 
-
-        <!-- COMMUNICATION -->
 
         <div
             class="card"
             onclick="navigateMenu('communication')">
 
-            <div class="card-icon">
-                💬
-            </div>
+            <div class="card-icon">💬</div>
 
-            <h3>
-                Communication
-            </h3>
+            <h3>Communication</h3>
 
             <p>
-
                 Other person's speech can be converted
                 into readable text.
-
             </p>
 
             <button class="card-button">
-
                 Open Communication
-
             </button>
 
         </div>
 
 
-        <!-- SETTINGS -->
+        <div class="card" onclick="openSettings()">
 
-        <div
-            class="card"
-            onclick="openSettings()">
+            <div class="card-icon">⚙️</div>
 
-            <div class="card-icon">
-                ⚙️
-            </div>
-
-            <h3>
-                Accessibility Settings
-            </h3>
+            <h3>Accessibility Settings</h3>
 
             <p>
-
                 Customize text size, contrast, alerts
                 and vibration preferences.
-
             </p>
 
             <button class="card-button">
-
                 Customize
-
             </button>
 
         </div>
-
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- LIVE CAPTIONS -->
-    <!-- ============================= -->
+    <!-- ================= LIVE CAPTIONS ================= -->
 
-    <section
-        class="section"
-        id="captions">
-
+    <section class="section" id="captions">
 
         <h2 class="section-title">
-
             🎤 Live Caption
-
         </h2>
-
 
         <div class="caption-box">
 
-
-            <div
-                class="caption-status"
-                id="captionStatus">
-
+            <div class="caption-status" id="captionStatus">
                 ● Caption service ready
-
             </div>
 
-
-            <div
-                class="caption-text"
-                id="captionText">
-
+            <div class="caption-text" id="captionText">
                 Press "Start Captions" to begin.
-
             </div>
-
 
             <div class="caption-controls">
-
 
                 <button
                     class="start"
                     onclick="startCaptions()">
-
                     ▶ Start
-
                 </button>
-
 
                 <button
                     class="stop"
                     onclick="stopCaptions()">
-
                     ■ Stop
-
                 </button>
-
 
             </div>
 
@@ -1177,43 +710,28 @@ button {
     </section>
 
 
-    <!-- ============================= -->
-    <!-- SOUND ALERTS -->
-    <!-- ============================= -->
+    <!-- ================= SOUND ALERTS ================= -->
 
-    <section
-        class="section"
-        id="alerts">
-
+    <section class="section" id="alerts">
 
         <h2 class="section-title">
-
             🔔 Recent Sound Alerts
-
         </h2>
 
-
         <div class="alert-list">
-
 
             <div class="alert emergency">
 
                 <div class="alert-title">
-
                     🚨 Emergency Alarm
-
                 </div>
 
                 <div>
-
                     Possible alarm detected nearby.
-
                 </div>
 
                 <div class="alert-time">
-
                     10:42 AM
-
                 </div>
 
             </div>
@@ -1222,21 +740,15 @@ button {
             <div class="alert">
 
                 <div class="alert-title">
-
                     🚗 Vehicle Horn
-
                 </div>
 
                 <div>
-
                     Vehicle horn detected.
-
                 </div>
 
                 <div class="alert-time">
-
                     10:35 AM
-
                 </div>
 
             </div>
@@ -1245,103 +757,68 @@ button {
             <div class="alert safe">
 
                 <div class="alert-title">
-
                     🔔 Doorbell
-
                 </div>
 
                 <div>
-
                     Doorbell detected.
-
                 </div>
 
                 <div class="alert-time">
-
                     10:20 AM
-
                 </div>
 
             </div>
 
-
         </div>
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- ANNOUNCEMENTS -->
-    <!-- ============================= -->
+    <!-- ================= ANNOUNCEMENTS ================= -->
 
-    <section
-        class="section"
-        id="announcements">
-
+    <section class="section" id="announcements">
 
         <h2 class="section-title">
-
             📢 Latest Announcement
-
         </h2>
 
-
         <div class="announcement">
-
 
             <strong>
-
                 Announcement Detected
-
             </strong>
 
-
             <div class="announcement-text">
-
                 "Train number 12622 is arriving
                 at Platform 3."
-
             </div>
-
 
         </div>
 
     </section>
 
 
-    <!-- ============================= -->
-    <!-- COMMUNICATION -->
-    <!-- ============================= -->
+    <!-- ================= COMMUNICATION ================= -->
 
-    <section
-        class="section"
-        id="communication">
-
+    <section class="section" id="communication">
 
         <h2 class="section-title">
-
             💬 Communication
-
         </h2>
-
 
         <div class="announcement">
 
-
             <p>
-
                 Other person speaks and their speech
                 is converted into text.
-
             </p>
 
 
             <div class="communication">
 
-
                 <button
                     class="start"
-                    id="startListening"
                     onclick="startCommunicationListening()">
 
                     🎤 Start Listening
@@ -1351,13 +828,11 @@ button {
 
                 <button
                     class="stop"
-                    id="stopListening"
                     onclick="stopCommunicationListening()">
 
                     ■ Stop
 
                 </button>
-
 
             </div>
 
@@ -1390,109 +865,97 @@ button {
 
             </div>
 
-
         </div>
 
     </section>
 
-
 </main>
 
 
-<!-- ============================= -->
-<!-- SETTINGS MODAL -->
-<!-- ============================= -->
+<!-- ================= SETTINGS ================= -->
 
-<div
-    class="modal"
-    id="settingsModal">
-
+<div class="modal" id="settingsModal">
 
     <div class="modal-box">
 
-
-        <span
-            class="close"
-            onclick="closeSettings()">
-
+        <span class="close" onclick="closeSettings()">
             ×
-
         </span>
 
 
         <h2>
-
             ⚙️ Accessibility Settings
-
         </h2>
 
 
         <br>
 
 
-        <label>
+        <label class="setting-option">
 
-            <input
-                type="checkbox"
-                checked>
+            <input type="checkbox" checked>
 
             Large Text
 
         </label>
 
 
-        <br><br>
+        <label class="setting-option">
 
-
-        <label>
-
-            <input
-                type="checkbox">
+            <input type="checkbox">
 
             High Contrast
 
         </label>
 
 
-        <br><br>
+        <label class="setting-option">
 
-
-        <label>
-
-            <input
-                type="checkbox"
-                checked>
+            <input type="checkbox" checked>
 
             Vibration Alerts
 
         </label>
 
 
-        <br><br>
+        <label class="setting-option">
 
-
-        <label>
-
-            <input
-                type="checkbox"
-                checked>
+            <input type="checkbox" checked>
 
             Emergency Sound Detection
 
         </label>
 
 
-        <br><br>
+        <br>
 
 
-        <button
-            class="start"
-            onclick="closeSettings()">
+        <div style="
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        ">
 
-            Save Settings
 
-        </button>
+            <button
+                class="start"
+                onclick="closeSettings()">
 
+                💾 Save Settings
+
+            </button>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                🚪 Logout
+
+            </button>
+
+
+        </div>
 
     </div>
 
@@ -1500,7 +963,6 @@ button {
 
 
 <script>
-
 
 /* ============================= */
 /* HAMBURGER MENU */
@@ -1577,12 +1039,13 @@ function startCaptions() {
     clearTimeout(captionTimer);
 
 
-    captionTimer = setTimeout(function() {
+    captionTimer =
+        setTimeout(function() {
 
-        text.innerHTML =
-            "“Your appointment is scheduled for 3:00 PM.”";
+            text.innerHTML =
+                "“Your appointment is scheduled for 3:00 PM.”";
 
-    }, 3000);
+        }, 3000);
 
 }
 
@@ -1653,7 +1116,7 @@ function announcement() {
 /* COMMUNICATION */
 /* ============================= */
 
-let communicationRecognition;
+let communicationRecognition = null;
 
 let communicationListening = false;
 
@@ -1679,7 +1142,6 @@ function startCommunicationListening() {
 
     if (!communicationRecognition) {
 
-
         communicationRecognition =
             new SpeechRecognition();
 
@@ -1699,7 +1161,6 @@ function startCommunicationListening() {
         communicationRecognition.onstart =
             function() {
 
-
                 communicationListening =
                     true;
 
@@ -1715,7 +1176,6 @@ function startCommunicationListening() {
         communicationRecognition.onresult =
             function(event) {
 
-
                 let finalText = "";
 
                 let interimText = "";
@@ -1726,7 +1186,6 @@ function startCommunicationListening() {
                     i < event.results.length;
                     i++
                 ) {
-
 
                     const transcript =
                         event.results[i][0].transcript;
@@ -1739,9 +1198,7 @@ function startCommunicationListening() {
                         finalText +=
                             transcript + " ";
 
-                    }
-
-                    else {
+                    } else {
 
                         interimText +=
                             transcript;
@@ -1758,8 +1215,7 @@ function startCommunicationListening() {
 
 
                 const existingText =
-                    textElement.dataset.finalText ||
-                    "";
+                    textElement.dataset.finalText || "";
 
 
                 const combinedText =
@@ -1782,7 +1238,6 @@ function startCommunicationListening() {
         communicationRecognition.onerror =
             function(event) {
 
-
                 document.getElementById(
                     "communicationStatus"
                 ).innerHTML =
@@ -1795,22 +1250,15 @@ function startCommunicationListening() {
         communicationRecognition.onend =
             function() {
 
-
                 if (communicationListening) {
 
                     try {
 
                         communicationRecognition.start();
 
-                    }
+                    } catch (e) {}
 
-                    catch (e) {
-
-                    }
-
-                }
-
-                else {
+                } else {
 
                     document.getElementById(
                         "communicationStatus"
@@ -1831,9 +1279,7 @@ function startCommunicationListening() {
 
         communicationRecognition.start();
 
-    }
-
-    catch (e) {
+    } catch (e) {
 
         document.getElementById(
             "communicationStatus"
@@ -1877,8 +1323,6 @@ function openSettings() {
         "flex";
 
 
-    /* Close menu if it is open */
-
     const menu =
         document.getElementById("sideMenu");
 
@@ -1904,7 +1348,41 @@ function closeSettings() {
 
 
 /* ============================= */
-/* ESC KEY CLOSES MENU */
+/* LOGOUT → HOME */
+/* ============================= */
+
+function logout() {
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if (confirmLogout) {
+
+        /*
+        If this file is:
+
+        frontend/pages/dashboard.html
+
+        and home is:
+
+        frontend/index.html
+
+        then ../index.html is correct.
+        */
+
+        window.location.href =
+            "../index.html";
+
+    }
+
+}
+
+
+/* ============================= */
+/* ESC KEY */
 /* ============================= */
 
 document.addEventListener(
@@ -1913,25 +1391,37 @@ document.addEventListener(
 
         if (event.key === "Escape") {
 
-            const menu =
-                document.getElementById("sideMenu");
-
-            const overlay =
-                document.getElementById("menuOverlay");
+            document.getElementById(
+                "sideMenu"
+            ).classList.remove("open");
 
 
-            menu.classList.remove("open");
+            document.getElementById(
+                "menuOverlay"
+            ).classList.remove("active");
 
-            overlay.classList.remove("active");
+
+            closeSettings();
 
         }
 
     }
 );
+    function logout() {
 
+    const confirmLogout = confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if (confirmLogout) {
+
+        window.location.href =
+            "/Accessibility%20Assistant/frontend/index.html";
+
+    }
+}
 
 </script>
 
 </body>
-
 </html>
