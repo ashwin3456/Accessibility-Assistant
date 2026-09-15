@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Vision Assistant - FASAL FLOW</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+
+        /* PAGE */
+
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 240px;
+            background: #111827;
+            color: white;
+            padding: 30px 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #374151;
+        }
+
+        /* MAIN */
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background: #f7f9fc;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        /* VISION GRID */
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        /* CAMERA */
+
+        .camera-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .camera-box {
+            background: #111827;
+            height: 420px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #camera {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .camera-placeholder {
+            text-align: center;
+            color: white;
+        }
+
+        .camera-placeholder .camera-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .camera-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .camera-buttons button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .start-btn {
+            background: #111827;
+            color: white;
+        }
+
+        .analyze-btn {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        /* RESULT */
+
+        .result-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .result-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .status {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status span {
+            font-weight: bold;
+        }
+
+        .detected-object {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .ai-message {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eef2ff;
+            border-radius: 10px;
+        }
+
+        .ai-message h3 {
+            margin-bottom: 10px;
+        }
+
+        .speak-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #111827;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 180px;
+            }
+
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                margin-right: 5px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .camera-box {
+                height: 300px;
+            }
+
+            .camera-buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+    <div class="logo">
+        FASAL FLOW
+    </div>
+
+    <nav>
+
+        <a href="../index.html">
+            Home
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="app-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2>Assistant</h2>
+
+        <a href="dashboard.html">
+            🏠 Dashboard
+        </a>
+
+        <a href="vision.html" class="active">
+            👁️ Vision
+        </a>
+
+        <a href="text-reader.html">
+            📖 Text Reader
+        </a>
+
+        <a href="voice.html">
+            🎤 Voice Assistant
+        </a>
+
+        <a href="captions.html">
+            💬 Live Captions
+        </a>
+
+        <a href="navigation.html">
+            🧭 Navigation
+        </a>
+
+        <a href="sos.html">
+            🆘 Emergency SOS
+        </a>
+
+        <a href="settings.html">
+            ⚙️ Settings
+        </a>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <div class="page-title">
+
+            <h1>
+                👁️ Vision Assistant
+            </h1>
+
+            <p>
+                Understand your surroundings using AI-powered vision.
+            </p>
+
+        </div>
+
+
+
+        <div class="vision-grid">
+
+
+            <!-- CAMERA -->
+
+            <div class="camera-card">
+
+                <h2>
+                    Camera
+                </h2>
+
+                <br>
+
+
+                <div class="camera-box">
+
+                    <video
+                        id="camera"
+                        autoplay
+                        playsinline>
+                    </video>
+
+
+                    <div
+                        class="camera-placeholder"
+                        id="placeholder">
+
+                        <div class="camera-icon">
+                            📷
+                        </div>
+
+                        <p>
+                            Camera is not active
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="camera-buttons">
+
+                    <button
+                        class="start-btn"
+                        onclick="startCamera()">
+
+                        📷 Start Camera
+
+                    </button>
+
+
+                    <button
+                        class="analyze-btn"
+                        onclick="analyzeScene()">
+
+                        🔍 Analyze Scene
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESULTS -->
+
+            <div class="result-card">
+
+                <h2>
+                    AI Analysis
+                </h2>
+
+
+                <div class="status">
+
+                    Status:
+                    <span id="status">
+                        Waiting
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    Detected Objects
+                </h3>
+
+
+                <div class="detected-object">
+
+                    <span>👤 Person</span>
+
+                    <span>2.1 m</span>
+
+                </div>
+
+
+                <div class="detected-object">
+
+                    <span>🪑 Chair</span>
+
+                    <span>1.4 m</span>
+
+                </div>
+
+
+                <div class="detected-object">
+
+                    <span>🚪 Door</span>
+
+                    <span>3.0 m</span>
+
+                </div>
+
+
+
+                <div class="ai-message">
+
+                    <h3>
+                        🧠 AI Assistant
+                    </h3>
+
+                    <p id="aiResult">
+
+                        Start the camera and analyze the scene
+                        to receive assistance.
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="speak-btn"
+                    onclick="speakResult()">
+
+                    🔊 Read Aloud
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+    let cameraStream = null;
+
+
+    async function startCamera() {
+
+        try {
+
+            cameraStream =
+                await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                });
+
+
+            const video =
+                document.getElementById("camera");
+
+            video.srcObject = cameraStream;
+
+            video.style.display = "block";
+
+            document.getElementById("placeholder")
+                .style.display = "none";
+
+            document.getElementById("status")
+                .textContent = "Camera Active";
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Unable to access camera. Please allow camera permission."
+            );
+
+            console.error(error);
+
+        }
+
+    }
+
+
+
+    function analyzeScene() {
+
+        document.getElementById("status")
+            .textContent = "Analyzing...";
+
+
+        /*
+            TEMPORARY DEMO RESPONSE
+
+            Later this will become:
+
+            Camera
+                ↓
+            Image Capture
+                ↓
+            FastAPI
+                ↓
+            YOLO
+                ↓
+            VLM
+                ↓
+            Context Prioritization
+                ↓
+            Response
+        */
+
+
+        setTimeout(function() {
+
+            document.getElementById("status")
+                .textContent = "Analysis Complete";
+
+
+            document.getElementById("aiResult")
+                .textContent =
+                "A chair is approximately 1.4 metres ahead of you. There is a person to your left.";
+
+        }, 1500);
+
+    }
+
+
+
+    function speakResult() {
+
+        const text =
+            document.getElementById("aiResult")
+            .textContent;
+
+
+        if ("speechSynthesis" in window) {
+
+            const speech =
+                new SpeechSynthesisUtterance(text);
+
+            speech.rate = 0.9;
+
+            window.speechSynthesis.speak(speech);
+
+        }
+
+        else {
+
+            alert(
+                "Text-to-speech is not supported in this browser."
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
