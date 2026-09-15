@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Text Reader - FASAL FLOW</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+
+    <style>
+
+        /* MAIN APPLICATION */
+
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 240px;
+            background: #111827;
+            color: white;
+            padding: 30px 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #374151;
+        }
+
+
+        /* CONTENT */
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background: #f7f9fc;
+        }
+
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+
+        /* GRID */
+
+        .reader-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+
+        /* CARD */
+
+        .reader-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+
+        .reader-card h2 {
+            margin-bottom: 20px;
+        }
+
+
+        /* UPLOAD */
+
+        .upload-box {
+
+            border: 2px dashed #9ca3af;
+
+            border-radius: 12px;
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .upload-box:hover {
+            background: #f9fafb;
+        }
+
+
+        .upload-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+
+        .upload-box p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+
+        .upload-button {
+
+            display: inline-block;
+
+            padding: 12px 22px;
+
+            background: #111827;
+
+            color: white;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+        }
+
+
+        #imageInput {
+            display: none;
+        }
+
+
+        /* IMAGE PREVIEW */
+
+        .preview-container {
+            margin-top: 25px;
+            display: none;
+        }
+
+
+        .preview-container img {
+
+            width: 100%;
+
+            max-height: 300px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+
+            border: 1px solid #e5e7eb;
+
+        }
+
+
+        /* BUTTONS */
+
+        .action-buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .action-buttons button {
+
+            flex: 1;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .scan-btn {
+
+            background: #111827;
+
+            color: white;
+
+        }
+
+
+        .clear-btn {
+
+            background: #e5e7eb;
+
+            color: #111827;
+
+        }
+
+
+        /* TEXT RESULT */
+
+        .result-box {
+
+            background: #f3f4f6;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            min-height: 180px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .result-box h3 {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* SIMPLIFIED */
+
+        .simplified-box {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #eef2ff;
+
+            border-radius: 10px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .read-button {
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #111827;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        /* STATUS */
+
+        .status {
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: #f3f4f6;
+
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .reader-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .sidebar a {
+                display: inline-block;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+    <div class="logo">
+        FASAL FLOW
+    </div>
+
+    <nav>
+
+        <a href="../index.html">
+            Home
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="app-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2>Assistant</h2>
+
+
+        <a href="dashboard.html">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="vision.html">
+            👁️ Vision
+        </a>
+
+
+        <a href="text-reader.html"
+           class="active">
+
+            📖 Text Reader
+
+        </a>
+
+
+        <a href="voice.html">
+            🎤 Voice Assistant
+        </a>
+
+
+        <a href="captions.html">
+            💬 Live Captions
+        </a>
+
+
+        <a href="navigation.html">
+            🧭 Navigation
+        </a>
+
+
+        <a href="sos.html">
+            🆘 Emergency SOS
+        </a>
+
+
+        <a href="settings.html">
+            ⚙️ Settings
+        </a>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <div class="page-title">
+
+            <h1>
+                📖 Text Reader
+            </h1>
+
+            <p>
+                Read and simplify signs, documents and other text using AI.
+            </p>
+
+        </div>
+
+
+
+        <div class="reader-grid">
+
+
+            <!-- LEFT -->
+
+            <div class="reader-card">
+
+                <h2>
+                    Upload or Capture Text
+                </h2>
+
+
+                <div
+                    class="upload-box"
+                    onclick="document.getElementById('imageInput').click()">
+
+
+                    <div class="upload-icon">
+                        📷
+                    </div>
+
+
+                    <p>
+                        Upload an image containing text
+                    </p>
+
+
+                    <span class="upload-button">
+                        Choose Image
+                    </span>
+
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        onchange="previewImage(event)">
+
+                </div>
+
+
+                <!-- PREVIEW -->
+
+                <div
+                    class="preview-container"
+                    id="previewContainer">
+
+                    <img
+                        id="previewImage"
+                        alt="Selected image">
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="action-buttons">
+
+                    <button
+                        class="scan-btn"
+                        onclick="scanText()">
+
+                        🔍 Scan Text
+
+                    </button>
+
+
+                    <button
+                        class="clear-btn"
+                        onclick="clearReader()">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="status"
+                    id="status">
+
+                    Status:
+                    <strong>Waiting for image</strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT -->
+
+            <div class="reader-card">
+
+                <h2>
+                    AI Result
+                </h2>
+
+
+                <!-- OCR -->
+
+                <div class="result-box">
+
+                    <h3>
+                        📝 Extracted Text
+                    </h3>
+
+
+                    <p id="extractedText">
+
+                        No text detected yet.
+
+                    </p>
+
+                </div>
+
+
+                <!-- SIMPLIFIED -->
+
+                <div class="simplified-box">
+
+                    <h3>
+                        🧠 Simplified Information
+                    </h3>
+
+
+                    <p id="simplifiedText">
+
+                        The AI-generated simplified explanation
+                        will appear here.
+
+                    </p>
+
+                </div>
+
+
+                <!-- SPEAK -->
+
+                <button
+                    class="read-button"
+                    onclick="readText()">
+
+                    🔊 Read Aloud
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+    /* IMAGE PREVIEW */
+
+    function previewImage(event) {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = function(e) {
+
+            document.getElementById(
+                "previewImage"
+            ).src = e.target.result;
+
+
+            document.getElementById(
+                "previewContainer"
+            ).style.display = "block";
+
+
+            document.getElementById(
+                "status"
+            ).innerHTML =
+                "Status: <strong>Image selected</strong>";
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    }
+
+
+
+    /* SCAN TEXT */
+
+    function scanText() {
+
+        const file =
+            document.getElementById(
+                "imageInput"
+            ).files[0];
+
+
+        if (!file) {
+
+            alert(
+                "Please choose an image first."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "status"
+        ).innerHTML =
+            "Status: <strong>Scanning...</strong>";
+
+
+        /*
+            TEMPORARY DEMO
+
+            Later:
+
+            Image
+              ↓
+            FastAPI
+              ↓
+            EasyOCR / Tesseract
+              ↓
+            Extracted Text
+              ↓
+            LLM
+              ↓
+            Simplified Information
+        */
+
+
+        setTimeout(function() {
+
+
+            document.getElementById(
+                "extractedText"
+            ).textContent =
+                "Passengers are requested to proceed to Platform 3. Chennai Express departure is scheduled for 6:40 PM.";
+
+
+            document.getElementById(
+                "simplifiedText"
+            ).textContent =
+                "Go to Platform 3. The Chennai Express leaves at 6:40 PM.";
+
+
+            document.getElementById(
+                "status"
+            ).innerHTML =
+                "Status: <strong>Text detected successfully</strong>";
+
+
+        }, 1500);
+
+    }
+
+
+
+    /* READ ALOUD */
+
+    function readText() {
+
+        const text =
+            document.getElementById(
+                "simplifiedText"
+            ).textContent;
+
+
+        if (
+            "speechSynthesis"
+            in window
+        ) {
+
+            window.speechSynthesis.cancel();
+
+
+            const speech =
+                new SpeechSynthesisUtterance(
+                    text
+                );
+
+
+            speech.rate = 0.9;
+
+
+            window.speechSynthesis.speak(
+                speech
+            );
+
+        }
+
+        else {
+
+            alert(
+                "Text-to-speech is not supported in this browser."
+            );
+
+        }
+
+    }
+
+
+
+    /* CLEAR */
+
+    function clearReader() {
+
+        document.getElementById(
+            "imageInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "previewContainer"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "extractedText"
+        ).textContent =
+            "No text detected yet.";
+
+
+        document.getElementById(
+            "simplifiedText"
+        ).textContent =
+            "The AI-generated simplified explanation will appear here.";
+
+
+        document.getElementById(
+            "status"
+        ).innerHTML =
+            "Status: <strong>Waiting for image</strong>";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
