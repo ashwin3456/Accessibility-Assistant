@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - FASAL FLOW</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        body {
+            background: #f5f7fa;
+        }
+
+        .settings-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .settings-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .settings-header p {
+            color: #666;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .settings-option {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option:hover {
+            background: #f5f7fa;
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: #e8f0ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-content h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+
+        .option-content p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .arrow {
+            font-size: 22px;
+            color: #777;
+        }
+
+        .logout .option-icon {
+            background: #fee2e2;
+        }
+
+        .logout h3 {
+            color: #dc2626;
+        }
+
+        @media (max-width: 600px) {
+
+            .settings-container {
+                margin: 30px auto;
+                padding: 15px;
+            }
+
+            .settings-header h1 {
+                font-size: 27px;
+            }
+
+            .settings-option {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            FASAL FLOW
+        </div>
+
+        <div class="nav-links">
+
+            <a href="../index.html">
+                Home
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Settings -->
+
+    <main class="settings-container">
+
+        <div class="settings-header">
+
+            <h1>Settings</h1>
+
+            <p>
+                Manage your account and get support
+            </p>
+
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <!-- Profile -->
+
+            <div
+                class="settings-option"
+                onclick="openProfile()"
+            >
+
+                <div class="option-icon">
+                    👤
+                </div>
+
+                <div class="option-content">
+
+                    <h3>Profile</h3>
+
+                    <p>
+                        View and manage your profile
+                    </p>
+
+                </div>
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </div>
+
+
+            <!-- Help -->
+
+            <div
+                class="settings-option"
+                onclick="openHelp()"
+            >
+
+                <div class="option-icon">
+                    ❓
+                </div>
+
+                <div class="option-content">
+
+                    <h3>Help</h3>
+
+                    <p>
+                        Get help using FASAL FLOW
+                    </p>
+
+                </div>
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </div>
+
+
+            <!-- Logout -->
+
+            <div
+                class="settings-option logout"
+                onclick="logout()"
+            >
+
+                <div class="option-icon">
+                    🚪
+                </div>
+
+                <div class="option-content">
+
+                    <h3>Logout</h3>
+
+                    <p>
+                        Sign out of your account
+                    </p>
+
+                </div>
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function openProfile() {
+
+            alert(
+                "Profile section will show your name, email and disability."
+            );
+
+        }
+
+
+        function openHelp() {
+
+            alert(
+                "For help, use the Vision, Voice, Text Reader, Navigation and SOS features."
+            );
+
+        }
+
+
+        function logout() {
+
+            const confirmLogout =
+                confirm("Are you sure you want to logout?");
+
+            if (confirmLogout) {
+
+                localStorage.removeItem("fasalLoggedIn");
+
+                window.location.href = "login.html";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
