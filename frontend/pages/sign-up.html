@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="../style.css">
     <style>
         * {
@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .login-container {
+        .signup-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -27,7 +27,7 @@
             overflow: hidden;
         }
 
-        .login-container::before {
+        .signup-container::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -43,7 +43,7 @@
             50% { transform: scale(1.1); opacity: 0.8; }
         }
 
-        .login-card {
+        .signup-card {
             background: white;
             padding: 50px 40px;
             border-radius: 24px;
@@ -66,7 +66,7 @@
             }
         }
 
-        .login-card h1 {
+        .signup-card h1 {
             font-size: 36px;
             margin-bottom: 8px;
             color: #1f2937;
@@ -74,27 +74,28 @@
             letter-spacing: -0.5px;
         }
 
-        .login-card p {
+        .signup-card p {
             color: #6b7280;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             font-size: 15px;
             line-height: 1.5;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #374151;
             font-size: 14px;
             letter-spacing: 0.3px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 14px 18px;
             border: 2px solid #e5e7eb;
@@ -102,9 +103,13 @@
             font-size: 15px;
             transition: all 0.3s ease;
             background: #f9fafb;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
             background: white;
@@ -115,7 +120,15 @@
             color: #9ca3af;
         }
 
-        .login-btn {
+        .form-group select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .signup-btn {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -128,49 +141,33 @@
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            margin-top: 10px;
         }
 
-        .login-btn:hover {
+        .signup-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .login-btn:active {
+        .signup-btn:active {
             transform: translateY(0);
         }
 
-        .forgot-password {
+        .login-link {
             text-align: center;
-            margin-top: 24px;
-        }
-
-        .forgot-password a {
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password a:hover {
-            color: #667eea;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 25px;
             border-top: 1px solid #e5e7eb;
         }
 
-        .signup-link a {
+        .login-link a {
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .signup-link a:hover {
+        .login-link a:hover {
             color: #764ba2;
             text-decoration: underline;
         }
@@ -195,12 +192,12 @@
         }
 
         @media (max-width: 768px) {
-            .login-card {
+            .signup-card {
                 padding: 40px 30px;
                 max-width: 100%;
             }
 
-            .login-card h1 {
+            .signup-card h1 {
                 font-size: 30px;
             }
 
@@ -212,12 +209,16 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <h1>Welcome</h1>
+    <div class="signup-container">
+        <div class="signup-card">
+            <h1>  Create Account</h1>
 
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required placeholder=" name">
+                </div>
 
-            <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required placeholder=" email">
@@ -225,18 +226,29 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="password ">
+                    <input type="password" id="password" name="password" required placeholder=" password">
                 </div>
 
-                <button type="submit" class="login-btn">Login</button>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder=" confirm password">
+                </div>
+
+                <div class="form-group">
+                    <label for="disability">Select Disability</label>
+                    <select id="disability" name="disability" required>
+                        <option value="">Select an option</option>
+                        <option value="visual_impairment">Visual Impairment</option>
+                        <option value="hearing_impairment">Hearing Impairment</option>
+                        <option value="speech_impairment">Speech Impairment</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="signup-btn">Sign Up</button>
             </form>
 
-            <div class="forgot-password">
-                <a href="#">Forgot password?</a>
-            </div>
-
-            <div class="signup-link">
-                Don't have an account? <a href="sign-up.html">Sign up</a>
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login</a>
             </div>
 
             <a href="../index.html" class="back-home">← Back</a>
@@ -244,17 +256,26 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const disability = document.getElementById('disability').value;
             
-            // Add your login logic here
-            console.log('Login attempt:', { email, password });
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
             
-            // For demo purposes, redirect to dashboard
-            window.location.href = 'dashboard.html';
+            // Add your signup logic here
+            console.log('Signup attempt:', { name, email, password, disability });
+            
+            // For demo purposes, redirect to login
+            window.location.href = 'login.html';
         });
     </script>
 </body>
