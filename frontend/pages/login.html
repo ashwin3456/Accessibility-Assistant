@@ -244,17 +244,56 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // Add your login logic here
-            console.log('Login attempt:', { email, password });
+            // Send data to PHP backend
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
             
-            // For demo purposes, redirect to dashboard
-            window.location.href = 'dashboard.html';
+            try {
+                const response = await fetch('../../backend/login.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                console.log('Login result:', result);
+                
+                if (result.success) {
+                    alert(result.message);
+                    // Store user info in localStorage for dashboard use
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    // Redirect based on disability type
+                    const disability = result.user.disability;
+                    console.log('Disability type:', disability);
+                    
+                    if (disability === 'visual_impairment') {
+                        console.log('Redirecting to visual dashboard');
+                        window.location.href = 'visual_dashboard.html';
+                    } else if (disability === 'hearing_impairment') {
+                        console.log('Redirecting to hearing dashboard');
+                        window.location.href = 'hearing_dashboard.html';
+                    } else if (disability === 'speech_impairment') {
+                        console.log('Redirecting to speech dashboard');
+                        window.location.href = 'speech_dashboard.html';
+                    } else {
+                        console.log('Redirecting to default dashboard');
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
         });
     </script>
 </body>

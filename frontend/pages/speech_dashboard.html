@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SpeechAssist Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172033;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+.sidebar {
+    position: fixed;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 18px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #cbd5e1;
+}
+
+.menu li:hover,
+.menu li.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* ---------- MAIN ---------- */
+
+.main {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+/* ---------- HEADER ---------- */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ---------- STATUS ---------- */
+
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* ---------- HERO ---------- */
+
+.hero {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+}
+
+.hero h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.hero p {
+    opacity: 0.9;
+}
+
+/* ---------- CARDS ---------- */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: 0.2s;
+    border: 2px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
+}
+
+.card-icon {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.card-button {
+    margin-top: 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ---------- TEXT TO SPEECH ---------- */
+
+.section {
+    margin-top: 30px;
+}
+
+.section-title {
+    margin-bottom: 15px;
+}
+
+.tts-box {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.tts-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.tts-input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.tts-controls {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.speak {
+    background: #2563eb;
+    color: white;
+}
+
+.clear {
+    background: #64748b;
+    color: white;
+}
+
+/* ---------- QUICK PHRASES ---------- */
+
+.phrase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.phrase-btn {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.phrase-btn:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+/* ---------- COMMUNICATION HISTORY ---------- */
+
+.history-box {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.history-item {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-text {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.history-time {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* ---------- SETTINGS ---------- */
+
+.settings-box {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-label {
+    font-size: 16px;
+}
+
+select {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+
+/* ---------- LOGOUT ---------- */
+
+.logout-button {
+    width: 100%;
+    margin-top: 25px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 13px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.logout-button:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .menu li {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .menu li:first-letter {
+        font-size: 20px;
+    }
+
+    .main {
+        margin-left: 70px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .phrase-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+
+    .main {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .profile .status {
+        display: none;
+    }
+
+    .tts-controls {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🗣️ Speech<span>Assist</span>
+    </div>
+
+    <ul class="menu">
+
+        <li class="active" onclick="scrollToSection('dashboard')">
+            🏠 Dashboard
+        </li>
+
+        <li onclick="scrollToSection('tts')">
+            🔊 Text to Speech
+        </li>
+
+        <li onclick="scrollToSection('phrases')">
+            💬 Quick Phrases
+        </li>
+
+        <li onclick="scrollToSection('history')">
+            📜 History
+        </li>
+
+        <li onclick="scrollToSection('settings')">
+            ⚙️ Settings
+        </li>
+
+    </ul>
+
+    <button type="button" class="logout-button" onclick="logout()">
+        🚪 Logout
+    </button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main" id="dashboard">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+            <h1>Speech Accessibility Dashboard</h1>
+            <p>Text-to-speech and communication assistance</p>
+        </div>
+
+        <div class="profile">
+
+            <div class="status">
+                ● Assistant Active
+            </div>
+
+            <div class="avatar">
+                SA
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h2>Hello 👋</h2>
+
+        <p>
+            Type your message and we'll speak it for you, or use quick phrases for common communication.
+        </p>
+
+    </section>
+
+
+    <!-- MAIN FEATURES -->
+
+    <section class="grid">
+
+        <!-- TEXT TO SPEECH -->
+
+        <div class="card" onclick="scrollToSection('tts')">
+
+            <div class="card-icon">🔊</div>
+
+            <h3>Text to Speech</h3>
+
+            <p>
+                Type any text and have it spoken aloud for you.
+            </p>
+
+            <button class="card-button">
+                Start Typing
+            </button>
+
+        </div>
+
+
+        <!-- QUICK PHRASES -->
+
+        <div class="card" onclick="scrollToSection('phrases')">
+
+            <div class="card-icon">💬</div>
+
+            <h3>Quick Phrases</h3>
+
+            <p>
+                Pre-set phrases for common situations.
+            </p>
+
+            <button class="card-button">
+                View Phrases
+            </button>
+
+        </div>
+
+
+        <!-- HISTORY -->
+
+        <div class="card" onclick="scrollToSection('history')">
+
+            <div class="card-icon">📜</div>
+
+            <h3>Communication History</h3>
+
+            <p>
+                View your recent spoken messages.
+            </p>
+
+            <button class="card-button">
+                View History
+            </button>
+
+        </div>
+
+
+        <!-- VOICE SETTINGS -->
+
+        <div class="card" onclick="scrollToSection('settings')">
+
+            <div class="card-icon">⚙️</div>
+
+            <h3>Voice Settings</h3>
+
+            <p>
+                Customize voice speed, pitch and language.
+            </p>
+
+            <button class="card-button">
+                Customize
+            </button>
+
+        </div>
+
+
+        <!-- EMERGENCY -->
+
+        <div class="card" onclick="emergencyMessage()">
+
+            <div class="card-icon">🚨</div>
+
+            <h3>Emergency Message</h3>
+
+            <p>
+                Quick access to emergency communication.
+            </p>
+
+            <button class="card-button">
+                Emergency
+            </button>
+
+        </div>
+
+
+        <!-- HELP -->
+
+        <div class="card" onclick="showHelp()">
+
+            <div class="card-icon">❓</div>
+
+            <h3>Help & Support</h3>
+
+            <p>
+                Get help using the speech assistant.
+            </p>
+
+            <button class="card-button">
+                Get Help
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- TEXT TO SPEECH -->
+
+    <section class="section" id="tts">
+
+        <h2 class="section-title">
+            🔊 Text to Speech
+        </h2>
+
+        <div class="tts-box">
+
+            <textarea
+                class="tts-input"
+                id="ttsInput"
+                placeholder="Type your message here..."
+            ></textarea>
+
+            <div class="tts-controls">
+
+                <button class="speak" onclick="speakText()">
+                    🔊 Speak
+                </button>
+
+                <button class="clear" onclick="clearText()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUICK PHRASES -->
+
+    <section class="section" id="phrases">
+
+        <h2 class="section-title">
+            💬 Quick Phrases
+        </h2>
+
+        <div class="phrase-grid">
+
+            <button class="phrase-btn" onclick="speakPhrase('Hello, how are you?')">
+                Hello
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Thank you very much')">
+                Thank You
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Please help me')">
+                Help Me
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('I need assistance')">
+                Need Assistance
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Yes, please')">
+                Yes
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('No, thank you')">
+                No
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('I do not understand')">
+                Don't Understand
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Please wait a moment')">
+                Wait
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Where is the restroom?')">
+                Restroom
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('I need water')">
+                Water
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('I am in pain')">
+                In Pain
+            </button>
+
+            <button class="phrase-btn" onclick="speakPhrase('Call emergency services')">
+                Emergency
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+
+    <section class="section" id="history">
+
+        <h2 class="section-title">
+            📜 Communication History
+        </h2>
+
+        <div class="history-box" id="historyBox">
+
+            <div class="history-item">
+
+                <div class="history-text">
+                    "Hello, how are you?"
+                </div>
+
+                <div class="history-time">
+                    2 minutes ago
+                </div>
+
+            </div>
+
+            <div class="history-item">
+
+                <div class="history-text">
+                    "Thank you very much"
+                </div>
+
+                <div class="history-time">
+                    5 minutes ago
+                </div>
+
+            </div>
+
+            <div class="history-item">
+
+                <div class="history-text">
+                    "I need assistance"
+                </div>
+
+                <div class="history-time">
+                    10 minutes ago
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section class="section" id="settings">
+
+        <h2 class="section-title">
+            ⚙️ Voice Settings
+        </h2>
+
+        <div class="settings-box">
+
+            <div class="setting-item">
+
+                <div class="setting-label">
+                    Voice Speed
+                </div>
+
+                <select id="voiceSpeed">
+                    <option value="0.5">Slow</option>
+                    <option value="1" selected>Normal</option>
+                    <option value="1.5">Fast</option>
+                </select>
+
+            </div>
+
+            <div class="setting-item">
+
+                <div class="setting-label">
+                    Voice Pitch
+                </div>
+
+                <select id="voicePitch">
+                    <option value="0.5">Low</option>
+                    <option value="1" selected>Normal</option>
+                    <option value="1.5">High</option>
+                </select>
+
+            </div>
+
+            <div class="setting-item">
+
+                <div class="setting-label">
+                    Language
+                </div>
+
+                <select id="voiceLanguage">
+                    <option value="en-US">English (US)</option>
+                    <option value="en-GB">English (UK)</option>
+                    <option value="es-ES">Spanish</option>
+                    <option value="fr-FR">French</option>
+                </select>
+
+            </div>
+
+            <button class="speak" onclick="saveSettings()" style="margin-top: 20px;">
+                Save Settings
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* ---------- TEXT TO SPEECH ---------- */
+
+function speakText() {
+
+    const text = document.getElementById('ttsInput').value;
+
+    if (!text.trim()) {
+
+        alert('Please enter some text to speak.');
+
+        return;
+
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    const speed = document.getElementById('voiceSpeed').value;
+
+    const pitch = document.getElementById('voicePitch').value;
+
+    const lang = document.getElementById('voiceLanguage').value;
+
+    utterance.rate = parseFloat(speed);
+
+    utterance.pitch = parseFloat(pitch);
+
+    utterance.lang = lang;
+
+    speechSynthesis.speak(utterance);
+
+    addToHistory(text);
+
+}
+
+
+function clearText() {
+
+    document.getElementById('ttsInput').value = '';
+
+}
+
+
+/* ---------- PHRASES ---------- */
+
+function speakPhrase(phrase) {
+
+    const utterance = new SpeechSynthesisUtterance(phrase);
+
+    const speed = document.getElementById('voiceSpeed').value;
+
+    const pitch = document.getElementById('voicePitch').value;
+
+    const lang = document.getElementById('voiceLanguage').value;
+
+    utterance.rate = parseFloat(speed);
+
+    utterance.pitch = parseFloat(pitch);
+
+    utterance.lang = lang;
+
+    speechSynthesis.speak(utterance);
+
+    addToHistory(phrase);
+
+}
+
+
+/* ---------- HISTORY ---------- */
+
+function addToHistory(text) {
+
+    const historyBox = document.getElementById('historyBox');
+
+    const newItem = document.createElement('div');
+
+    newItem.className = 'history-item';
+
+    newItem.innerHTML = `
+
+        <div class="history-text">"${text}"</div>
+
+        <div class="history-time">Just now</div>
+
+    `;
+
+    historyBox.insertBefore(newItem, historyBox.firstChild);
+
+}
+
+
+/* ---------- EMERGENCY ---------- */
+
+function emergencyMessage() {
+
+    const message = "This is an emergency. Please help me immediately.";
+
+    if (confirm('Speak emergency message: "' + message + '"?')) {
+
+        const utterance = new SpeechSynthesisUtterance(message);
+
+        utterance.rate = 1;
+
+        utterance.pitch = 1;
+
+        utterance.lang = 'en-US';
+
+        speechSynthesis.speak(utterance);
+
+    }
+
+}
+
+
+/* ---------- HELP ---------- */
+
+function showHelp() {
+
+    alert(
+
+        '🗣️ SPEECH ASSISTANT HELP\n\n' +
+
+        '1. Type text in the box and click "Speak"\n' +
+
+        '2. Use quick phrases for common messages\n' +
+
+        '3. Adjust voice settings in the settings section\n' +
+
+        '4. View your communication history\n' +
+
+        '5. Use emergency button for urgent situations'
+
+    );
+
+}
+
+
+/* ---------- SETTINGS ---------- */
+
+function saveSettings() {
+
+    alert('Settings saved successfully!');
+
+}
+
+
+/* ---------- LOGOUT ---------- */
+
+function logout() {
+    const confirmed = confirm("Are you sure you want to logout?");
+
+    if (confirmed) {
+        localStorage.removeItem("user");
+        sessionStorage.clear();
+
+        window.location.href = "login.html";
+    }
+}
+
+/* ---------- NAVIGATION ---------- */
+
+function scrollToSection(id) {
+
+    document.getElementById(id).scrollIntoView({
+
+        behavior: 'smooth'
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

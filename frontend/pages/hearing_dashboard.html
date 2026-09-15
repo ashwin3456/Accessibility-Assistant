@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DeafAssist Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172033;
+}
+
+/* ================= HAMBURGER ================= */
+
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: #111827;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 27px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.menu-toggle:hover {
+    background: #2563eb;
+}
+
+/* ================= SIDE MENU ================= */
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 290px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 18px;
+    z-index: 1001;
+    transition: 0.3s;
+    box-shadow: 5px 0 20px rgba(0,0,0,0.25);
+}
+
+.side-menu.open {
+    left: 0;
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.close-menu {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 15px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #cbd5e1;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.menu li:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* ================= OVERLAY ================= */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    padding: 30px;
+    padding-top: 90px;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+}
+
+.hero h2 {
+    margin-bottom: 8px;
+}
+
+/* ================= CARDS ================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: 0.2s;
+    border: 2px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
+}
+
+.card-icon {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.card-button {
+    margin-top: 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+/* ================= SECTIONS ================= */
+
+.section {
+    margin-top: 30px;
+}
+
+.section-title {
+    margin-bottom: 15px;
+}
+
+/* ================= CAPTIONS ================= */
+
+.caption-box {
+    background: #111827;
+    color: white;
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.caption-status {
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
+
+.caption-text {
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 22px;
+    min-height: 80px;
+}
+
+.caption-controls {
+    margin-top: 15px;
+}
+
+button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.start {
+    background: #2563eb;
+    color: white;
+}
+
+.stop {
+    background: #dc2626;
+    color: white;
+}
+
+/* ================= ALERTS ================= */
+
+.alert-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.alert {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 5px solid #f59e0b;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+
+.alert.emergency {
+    border-left-color: #ef4444;
+}
+
+.alert.safe {
+    border-left-color: #22c55e;
+}
+
+.alert-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.alert-time {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* ================= ANNOUNCEMENT ================= */
+
+.announcement {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.announcement strong {
+    color: #2563eb;
+}
+
+.announcement-text {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+/* ================= COMMUNICATION ================= */
+
+.communication {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-box {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 28px;
+    border-radius: 18px;
+}
+
+.close {
+    float: right;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* ================= SETTINGS ================= */
+
+.setting-option {
+    display: block;
+    padding: 10px 0;
+}
+
+.logout-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #b91c1c;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .alert-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+    .main {
+        padding: 15px;
+        padding-top: 85px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .profile .status {
+        display: none;
+    }
+
+    .communication {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- ================= HAMBURGER ================= -->
+
+<button class="menu-toggle" onclick="toggleMenu()">
+    ☰
+</button>
+
+
+<!-- ================= OVERLAY ================= -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+    onclick="toggleMenu()">
+</div>
+
+
+<!-- ================= MENU ================= -->
+
+<aside class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+
+        <div class="logo">
+            ♿ Deaf<span>Assist</span>
+        </div>
+
+        <button class="close-menu" onclick="toggleMenu()">
+            ×
+        </button>
+
+    </div>
+
+
+    <ul class="menu">
+
+        <li onclick="navigateMenu('dashboard')">
+            🏠
+            <span>Dashboard</span>
+        </li>
+
+        <li onclick="navigateMenu('captions')">
+            🎤
+            <span>Live Captions</span>
+        </li>
+
+        <li onclick="navigateMenu('alerts')">
+            🔔
+            <span>Sound Alerts</span>
+        </li>
+
+        <li onclick="navigateMenu('announcements')">
+            📢
+            <span>Announcements</span>
+        </li>
+
+        <li onclick="navigateMenu('communication')">
+            💬
+            <span>Communication</span>
+        </li>
+
+        <li onclick="openSettings()">
+            ⚙️
+            <span>Settings</span>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main" id="dashboard">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+
+            <h1>
+                Deaf Accessibility Dashboard
+            </h1>
+
+            <p>
+                Visual assistance for sound-based information
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="status">
+                ● Assistant Active
+            </div>
+
+            <div class="avatar">
+                DA
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h2>
+            Hello 👋
+        </h2>
+
+        <p>
+            Your assistant is monitoring important
+            environmental sounds and converting them
+            into visual information.
+        </p>
+
+    </section>
+
+
+    <!-- ================= FEATURE CARDS ================= -->
+
+    <section class="grid">
+
+
+        <div class="card" onclick="startCaptions()">
+
+            <div class="card-icon">🎤</div>
+
+            <h3>Live Captions</h3>
+
+            <p>
+                Convert spoken conversations into
+                readable text in real time.
+            </p>
+
+            <button class="card-button">
+                Start Captions
+            </button>
+
+        </div>
+
+
+        <div class="card" onclick="detectSound()">
+
+            <div class="card-icon">🔔</div>
+
+            <h3>Sound Alerts</h3>
+
+            <p>
+                Detect important sounds and show
+                visual notifications.
+            </p>
+
+            <button class="card-button">
+                Check Sounds
+            </button>
+
+        </div>
+
+
+        <div class="card" onclick="emergencyAlert()">
+
+            <div class="card-icon">🚨</div>
+
+            <h3>Emergency Alerts</h3>
+
+            <p>
+                Receive visual warnings for alarms,
+                sirens and emergency sounds.
+            </p>
+
+            <button class="card-button">
+                Emergency Mode
+            </button>
+
+        </div>
+
+
+        <div class="card" onclick="announcement()">
+
+            <div class="card-icon">📢</div>
+
+            <h3>Announcements</h3>
+
+            <p>
+                Convert public announcements into
+                easy-to-read text.
+            </p>
+
+            <button class="card-button">
+                View Announcements
+            </button>
+
+        </div>
+
+
+        <div
+            class="card"
+            onclick="navigateMenu('communication')">
+
+            <div class="card-icon">💬</div>
+
+            <h3>Communication</h3>
+
+            <p>
+                Other person's speech can be converted
+                into readable text.
+            </p>
+
+            <button class="card-button">
+                Open Communication
+            </button>
+
+        </div>
+
+
+        <div class="card" onclick="openSettings()">
+
+            <div class="card-icon">⚙️</div>
+
+            <h3>Accessibility Settings</h3>
+
+            <p>
+                Customize text size, contrast, alerts
+                and vibration preferences.
+            </p>
+
+            <button class="card-button">
+                Customize
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LIVE CAPTIONS ================= -->
+
+    <section class="section" id="captions">
+
+        <h2 class="section-title">
+            🎤 Live Caption
+        </h2>
+
+        <div class="caption-box">
+
+            <div class="caption-status" id="captionStatus">
+                ● Caption service ready
+            </div>
+
+            <div class="caption-text" id="captionText">
+                Press "Start Captions" to begin.
+            </div>
+
+            <div class="caption-controls">
+
+                <button
+                    class="start"
+                    onclick="startCaptions()">
+                    ▶ Start
+                </button>
+
+                <button
+                    class="stop"
+                    onclick="stopCaptions()">
+                    ■ Stop
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SOUND ALERTS ================= -->
+
+    <section class="section" id="alerts">
+
+        <h2 class="section-title">
+            🔔 Recent Sound Alerts
+        </h2>
+
+        <div class="alert-list">
+
+            <div class="alert emergency">
+
+                <div class="alert-title">
+                    🚨 Emergency Alarm
+                </div>
+
+                <div>
+                    Possible alarm detected nearby.
+                </div>
+
+                <div class="alert-time">
+                    10:42 AM
+                </div>
+
+            </div>
+
+
+            <div class="alert">
+
+                <div class="alert-title">
+                    🚗 Vehicle Horn
+                </div>
+
+                <div>
+                    Vehicle horn detected.
+                </div>
+
+                <div class="alert-time">
+                    10:35 AM
+                </div>
+
+            </div>
+
+
+            <div class="alert safe">
+
+                <div class="alert-title">
+                    🔔 Doorbell
+                </div>
+
+                <div>
+                    Doorbell detected.
+                </div>
+
+                <div class="alert-time">
+                    10:20 AM
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ANNOUNCEMENTS ================= -->
+
+    <section class="section" id="announcements">
+
+        <h2 class="section-title">
+            📢 Latest Announcement
+        </h2>
+
+        <div class="announcement">
+
+            <strong>
+                Announcement Detected
+            </strong>
+
+            <div class="announcement-text">
+                "Train number 12622 is arriving
+                at Platform 3."
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMMUNICATION ================= -->
+
+    <section class="section" id="communication">
+
+        <h2 class="section-title">
+            💬 Communication
+        </h2>
+
+        <div class="announcement">
+
+            <p>
+                Other person speaks and their speech
+                is converted into text.
+            </p>
+
+
+            <div class="communication">
+
+                <button
+                    class="start"
+                    onclick="startCommunicationListening()">
+
+                    🎤 Start Listening
+
+                </button>
+
+
+                <button
+                    class="stop"
+                    onclick="stopCommunicationListening()">
+
+                    ■ Stop
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="communicationStatus"
+                style="
+                margin-top:15px;
+                color:#2563eb;
+                font-weight:600;">
+
+                ● Ready to listen
+
+            </div>
+
+
+            <div
+                id="communicationText"
+                style="
+                margin-top:15px;
+                background:#111827;
+                color:white;
+                padding:20px;
+                border-radius:12px;
+                font-size:22px;
+                min-height:90px;">
+
+                The other person's speech
+                will appear here as text.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<div class="modal" id="settingsModal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeSettings()">
+            ×
+        </span>
+
+
+        <h2>
+            ⚙️ Accessibility Settings
+        </h2>
+
+
+        <br>
+
+
+        <label class="setting-option">
+
+            <input type="checkbox" checked>
+
+            Large Text
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <input type="checkbox">
+
+            High Contrast
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <input type="checkbox" checked>
+
+            Vibration Alerts
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <input type="checkbox" checked>
+
+            Emergency Sound Detection
+
+        </label>
+
+
+        <br>
+
+
+        <div style="
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        ">
+
+
+            <button
+                class="start"
+                onclick="closeSettings()">
+
+                💾 Save Settings
+
+            </button>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                🚪 Logout
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ============================= */
+/* HAMBURGER MENU */
+/* ============================= */
+
+function toggleMenu() {
+
+    const menu =
+        document.getElementById("sideMenu");
+
+    const overlay =
+        document.getElementById("menuOverlay");
+
+
+    menu.classList.toggle("open");
+
+    overlay.classList.toggle("active");
+
+}
+
+
+/* ============================= */
+/* MENU NAVIGATION */
+/* ============================= */
+
+function navigateMenu(section) {
+
+    toggleMenu();
+
+
+    setTimeout(function() {
+
+        const element =
+            document.getElementById(section);
+
+
+        if (element) {
+
+            element.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        }
+
+    }, 200);
+
+}
+
+
+/* ============================= */
+/* LIVE CAPTIONS */
+/* ============================= */
+
+let captionTimer;
+
+
+function startCaptions() {
+
+    const text =
+        document.getElementById("captionText");
+
+    const status =
+        document.getElementById("captionStatus");
+
+
+    status.innerHTML =
+        "🔵 Listening for speech...";
+
+
+    text.innerHTML =
+        "“Hello, how can I help you today?”";
+
+
+    clearTimeout(captionTimer);
+
+
+    captionTimer =
+        setTimeout(function() {
+
+            text.innerHTML =
+                "“Your appointment is scheduled for 3:00 PM.”";
+
+        }, 3000);
+
+}
+
+
+function stopCaptions() {
+
+    clearTimeout(captionTimer);
+
+
+    document.getElementById(
+        "captionStatus"
+    ).innerHTML =
+        "● Caption service stopped";
+
+
+    document.getElementById(
+        "captionText"
+    ).innerHTML =
+        "Press Start to begin captions.";
+
+}
+
+
+/* ============================= */
+/* SOUND DETECTION */
+/* ============================= */
+
+function detectSound() {
+
+    alert(
+        "🔔 SOUND DETECTED\n\n" +
+        "Possible vehicle horn detected nearby."
+    );
+
+}
+
+
+/* ============================= */
+/* EMERGENCY */
+/* ============================= */
+
+function emergencyAlert() {
+
+    alert(
+        "🚨 EMERGENCY ALERT\n\n" +
+        "Possible emergency alarm detected.\n\n" +
+        "Please check your surroundings and seek appropriate assistance."
+    );
+
+}
+
+
+/* ============================= */
+/* ANNOUNCEMENT */
+/* ============================= */
+
+function announcement() {
+
+    alert(
+        "📢 ANNOUNCEMENT\n\n" +
+        "Train number 12622 is arriving at Platform 3."
+    );
+
+}
+
+
+/* ============================= */
+/* COMMUNICATION */
+/* ============================= */
+
+let communicationRecognition = null;
+
+let communicationListening = false;
+
+
+function startCommunicationListening() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Speech recognition is not supported in this browser. " +
+            "Please use Google Chrome."
+        );
+
+        return;
+
+    }
+
+
+    if (!communicationRecognition) {
+
+        communicationRecognition =
+            new SpeechRecognition();
+
+
+        communicationRecognition.continuous =
+            true;
+
+
+        communicationRecognition.interimResults =
+            true;
+
+
+        communicationRecognition.lang =
+            "en-IN";
+
+
+        communicationRecognition.onstart =
+            function() {
+
+                communicationListening =
+                    true;
+
+
+                document.getElementById(
+                    "communicationStatus"
+                ).innerHTML =
+                    "🔵 Listening... Other person can speak now.";
+
+            };
+
+
+        communicationRecognition.onresult =
+            function(event) {
+
+                let finalText = "";
+
+                let interimText = "";
+
+
+                for (
+                    let i = event.resultIndex;
+                    i < event.results.length;
+                    i++
+                ) {
+
+                    const transcript =
+                        event.results[i][0].transcript;
+
+
+                    if (
+                        event.results[i].isFinal
+                    ) {
+
+                        finalText +=
+                            transcript + " ";
+
+                    } else {
+
+                        interimText +=
+                            transcript;
+
+                    }
+
+                }
+
+
+                const textElement =
+                    document.getElementById(
+                        "communicationText"
+                    );
+
+
+                const existingText =
+                    textElement.dataset.finalText || "";
+
+
+                const combinedText =
+                    existingText + finalText;
+
+
+                textElement.dataset.finalText =
+                    combinedText;
+
+
+                textElement.innerHTML =
+                    combinedText +
+                    '<span style="opacity:0.55;">' +
+                    interimText +
+                    '</span>';
+
+            };
+
+
+        communicationRecognition.onerror =
+            function(event) {
+
+                document.getElementById(
+                    "communicationStatus"
+                ).innerHTML =
+                    "⚠️ Speech recognition error: " +
+                    event.error;
+
+            };
+
+
+        communicationRecognition.onend =
+            function() {
+
+                if (communicationListening) {
+
+                    try {
+
+                        communicationRecognition.start();
+
+                    } catch (e) {}
+
+                } else {
+
+                    document.getElementById(
+                        "communicationStatus"
+                    ).innerHTML =
+                        "● Listening stopped";
+
+                }
+
+            };
+
+    }
+
+
+    communicationListening = true;
+
+
+    try {
+
+        communicationRecognition.start();
+
+    } catch (e) {
+
+        document.getElementById(
+            "communicationStatus"
+        ).innerHTML =
+            "🔵 Listening... Other person can speak now.";
+
+    }
+
+}
+
+
+function stopCommunicationListening() {
+
+    communicationListening = false;
+
+
+    if (communicationRecognition) {
+
+        communicationRecognition.stop();
+
+    }
+
+
+    document.getElementById(
+        "communicationStatus"
+    ).innerHTML =
+        "● Listening stopped";
+
+}
+
+
+/* ============================= */
+/* SETTINGS */
+/* ============================= */
+
+function openSettings() {
+
+    document.getElementById(
+        "settingsModal"
+    ).style.display =
+        "flex";
+
+
+    const menu =
+        document.getElementById("sideMenu");
+
+    const overlay =
+        document.getElementById("menuOverlay");
+
+
+    menu.classList.remove("open");
+
+    overlay.classList.remove("active");
+
+}
+
+
+function closeSettings() {
+
+    document.getElementById(
+        "settingsModal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ============================= */
+/* LOGOUT → HOME */
+/* ============================= */
+
+function logout() {
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if (confirmLogout) {
+
+        /*
+        If this file is:
+
+        frontend/pages/dashboard.html
+
+        and home is:
+
+        frontend/index.html
+
+        then ../index.html is correct.
+        */
+
+        window.location.href =
+            "../index.html";
+
+    }
+
+}
+
+
+/* ============================= */
+/* ESC KEY */
+/* ============================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            document.getElementById(
+                "sideMenu"
+            ).classList.remove("open");
+
+
+            document.getElementById(
+                "menuOverlay"
+            ).classList.remove("active");
+
+
+            closeSettings();
+
+        }
+
+    }
+);
+    function logout() {
+
+    const confirmLogout = confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if (confirmLogout) {
+
+        window.location.href =
+            "/Accessibility%20Assistant/frontend/pages/login.html";
+
+    }
+}
+
+</script>
+
+</body>
+</html>

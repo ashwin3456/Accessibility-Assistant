@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Visual Assistance</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css">
+
+
+    <style>
+
+        /* =====================================
+           VISUAL DASHBOARD
+        ===================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            background: #f3f3f3;
+
+            color: #111;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+        }
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        .visual-header {
+
+            width: 100%;
+
+            height: 70px;
+
+            background: #111;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            padding: 0 20px;
+
+            position: relative;
+
+            z-index: 2000;
+
+        }
+
+
+        /* =====================================
+           MENU CONTAINER
+        ===================================== */
+
+        .menu-container {
+
+            position: relative;
+
+            display: inline-block;
+
+        }
+
+
+        /* =====================================
+           MENU BUTTON
+        ===================================== */
+
+        .menu-button {
+
+            width: 52px;
+
+            height: 52px;
+
+            background: #333;
+
+            color: white;
+
+            border: 2px solid #555;
+
+            border-radius: 12px;
+
+            font-size: 27px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+
+        }
+
+
+        .menu-button:hover {
+
+            background: #444;
+
+            transform: scale(1.04);
+
+        }
+
+
+        .menu-button:active {
+
+            transform: scale(0.96);
+
+        }
+
+
+        .menu-button:focus {
+
+            outline: 3px solid #aaa;
+
+            outline-offset: 3px;
+
+        }
+
+
+        /* =====================================
+           DROPDOWN MENU
+        ===================================== */
+
+        .menu-dropdown {
+
+            position: absolute;
+
+            top: calc(100% + 10px);
+
+            left: 0;
+
+            width: 230px;
+
+            background: #222;
+
+            border: 2px solid #555;
+
+            border-radius: 14px;
+
+            padding: 8px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.45);
+
+            display: none;
+
+            z-index: 3000;
+
+        }
+
+
+        .menu-dropdown.show {
+
+            display: block;
+
+        }
+
+
+        /* =====================================
+           MENU ITEM
+        ===================================== */
+
+        .menu-item {
+
+            width: 100%;
+
+            min-height: 52px;
+
+            background: transparent;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 12px 15px;
+
+            margin: 2px 0;
+
+            text-align: left;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            transition:
+                background 0.2s ease,
+                padding-left 0.2s ease;
+
+        }
+
+
+        .menu-item:hover {
+
+            background: #3a3a3a;
+
+            padding-left: 19px;
+
+        }
+
+
+        .menu-item:active {
+
+            background: #444;
+
+        }
+
+
+        .menu-item:focus {
+
+            outline: 3px solid #888;
+
+            outline-offset: -3px;
+
+        }
+
+
+        /* =====================================
+           MENU ICON
+        ===================================== */
+
+        .menu-icon {
+
+            width: 28px;
+
+            min-width: 28px;
+
+            text-align: center;
+
+            font-size: 20px;
+
+        }
+
+
+        /* =====================================
+           HOME MENU ITEM
+        ===================================== */
+
+        .home-item {
+
+            background: #333;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .home-item:hover {
+
+            background: #444;
+
+        }
+
+
+        /* =====================================
+           LOGOUT
+        ===================================== */
+
+        .menu-item.logout {
+
+            margin-top: 6px;
+
+            padding-top: 14px;
+
+            border-top:
+                1px solid #555;
+
+            color: #ff6b6b;
+
+            border-radius:
+                0 0 10px 10px;
+
+        }
+
+
+        .menu-item.logout:hover {
+
+            background: #3a3a3a;
+
+            color: #ff8585;
+
+        }
+
+
+        /* =====================================
+           MAIN
+        ===================================== */
+
+        .visual-container {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding: 25px;
+
+            padding-bottom: 100px;
+
+        }
+
+
+        /* =====================================
+           TITLE
+        ===================================== */
+
+        .visual-title {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .visual-title h1 {
+
+            font-size: 35px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .visual-title p {
+
+            font-size: 19px;
+
+        }
+
+
+        /* =====================================
+           CAMERA
+        ===================================== */
+
+        .camera-wrapper {
+
+            position: relative;
+
+            max-width: 900px;
+
+            height: 500px;
+
+            margin: auto;
+
+            background: #000;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            border: 4px solid #111;
+
+        }
+
+
+        #camera {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: none;
+
+        }
+
+
+        .camera-placeholder {
+
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: white;
+
+            text-align: center;
+
+        }
+
+
+        .camera-icon {
+
+            font-size: 75px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .camera-placeholder h2 {
+
+            font-size: 28px;
+
+        }
+
+
+        .camera-placeholder p {
+
+            margin-top: 10px;
+
+            font-size: 17px;
+
+            color: #ccc;
+
+        }
+
+
+        /* =====================================
+           CAMERA STATUS
+        ===================================== */
+
+        .camera-status {
+
+            position: absolute;
+
+            top: 15px;
+
+            left: 15px;
+
+            background:
+                rgba(0, 0, 0, 0.8);
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 25px;
+
+            z-index: 10;
+
+            font-weight: bold;
+
+        }
+
+
+        .status-dot {
+
+            width: 12px;
+
+            height: 12px;
+
+            background: #777;
+
+            display: inline-block;
+
+            border-radius: 50%;
+
+            margin-right: 7px;
+
+        }
+
+
+        .status-dot.active {
+
+            background: #00c853;
+
+        }
+
+
+        /* =====================================
+           DETECTION BOXES
+        ===================================== */
+
+        .detection-box {
+
+            position: absolute;
+
+            display: none;
+
+            border: 3px solid white;
+
+            background:
+                rgba(0, 0, 0, 0.8);
+
+            color: white;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            z-index: 5;
+
+        }
+
+
+        .person-box {
+
+            top: 25%;
+
+            left: 45%;
+
+        }
+
+
+        .obstacle-box {
+
+            bottom: 25%;
+
+            left: 35%;
+
+        }
+
+
+        .vehicle-box {
+
+            top: 35%;
+
+            right: 15%;
+
+        }
+
+
+        .sign-box {
+
+            top: 15%;
+
+            left: 25%;
+
+        }
+
+
+        /* =====================================
+           AI MESSAGE
+        ===================================== */
+
+        .ai-message {
+
+            max-width: 900px;
+
+            margin: 20px auto;
+
+            padding: 25px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            border: 2px solid #ddd;
+
+            text-align: center;
+
+        }
+
+
+        .ai-message h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        #aiMessage {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            min-height: 35px;
+
+        }
+
+
+        /* =====================================
+           HAZARD
+        ===================================== */
+
+        .hazard-panel {
+
+            max-width: 900px;
+
+            margin: 20px auto;
+
+            padding: 20px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            border: 3px solid #111;
+
+            text-align: center;
+
+        }
+
+
+        .hazard-panel h2 {
+
+            font-size: 21px;
+
+        }
+
+
+        #hazardStatus {
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+
+        }
+
+
+        /* =====================================
+           TEXT READER
+        ===================================== */
+
+        .text-panel {
+
+            max-width: 900px;
+
+            margin: 20px auto;
+
+            padding: 25px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            border: 2px solid #ddd;
+
+            display: flex;
+
+            gap: 25px;
+
+            align-items: center;
+
+        }
+
+
+        .text-icon {
+
+            font-size: 60px;
+
+            min-width: 75px;
+
+            text-align: center;
+
+        }
+
+
+        .text-content {
+
+            flex: 1;
+
+        }
+
+
+        .text-content h2 {
+
+            font-size: 23px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .text-content p {
+
+            font-size: 17px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .detected-text {
+
+            background: #f1f1f1;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            font-size: 18px;
+
+        }
+
+
+        #detectedText {
+
+            display: block;
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            margin-top: 5px;
+
+        }
+
+
+        #textExplanation {
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            margin-top: 12px;
+
+        }
+
+
+        /* =====================================
+           DETECTION INFORMATION
+        ===================================== */
+
+        .detection-info {
+
+            max-width: 900px;
+
+            margin: 20px auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .detection-card {
+
+            background: white;
+
+            border: 2px solid #ddd;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            text-align: center;
+
+        }
+
+
+        .detection-card .icon {
+
+            font-size: 40px;
+
+        }
+
+
+        .detection-card h3 {
+
+            margin-top: 8px;
+
+            font-size: 18px;
+
+        }
+
+
+        .detection-card p {
+
+            margin-top: 5px;
+
+            font-size: 16px;
+
+        }
+
+
+        /* =====================================
+           BUTTONS
+        ===================================== */
+
+        .controls {
+
+            max-width: 900px;
+
+            margin: 25px auto;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .control-button {
+
+            min-width: 220px;
+
+            padding: 20px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .start-button {
+
+            background: #111;
+
+            color: white;
+
+        }
+
+
+        .stop-button {
+
+            background: #ddd;
+
+            color: #111;
+
+        }
+
+
+        .sos-button {
+
+            background: #111;
+
+            color: white;
+
+            border: 3px solid #000;
+
+        }
+
+
+        .control-button:hover {
+
+            transform: scale(1.03);
+
+        }
+
+
+        .control-button:focus {
+
+            outline: 4px solid #555;
+
+            outline-offset: 3px;
+
+        }
+
+
+        /* =====================================
+           FOOTER
+        ===================================== */
+
+        .visual-footer {
+
+            position: fixed;
+
+            bottom: 0;
+
+            left: 0;
+
+            right: 0;
+
+            height: 60px;
+
+            background: white;
+
+            border-top: 2px solid #ddd;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 14px;
+
+            z-index: 100;
+
+        }
+
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 700px) {
+
+            .visual-header {
+
+                height: 60px;
+
+                padding: 0 12px;
+
+            }
+
+
+            .menu-button {
+
+                width: 46px;
+
+                height: 46px;
+
+                font-size: 24px;
+
+            }
+
+
+            .menu-dropdown {
+
+                width: 215px;
+
+            }
+
+
+            .visual-container {
+
+                padding:
+                    18px 12px 90px;
+
+            }
+
+
+            .visual-title h1 {
+
+                font-size: 28px;
+
+            }
+
+
+            .camera-wrapper {
+
+                height: 380px;
+
+            }
+
+
+            .detection-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .text-panel {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+
+            .control-button {
+
+                width: 100%;
+
+            }
+
+
+            #aiMessage {
+
+                font-size: 21px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================
+         HEADER
+    ===================================== -->
+
+    <header class="visual-header">
+
+        <div class="menu-container">
+
+
+            <!-- MENU BUTTON -->
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+                aria-expanded="false">
+
+                ☰
+
+            </button>
+
+
+            <!-- =================================
+                 DROPDOWN MENU
+            ================================= -->
+
+            <div
+                class="menu-dropdown"
+                id="menuDropdown">
+
+
+                <!-- HOME -->
+
+                <button
+                    type="button"
+                    class="menu-item home-item"
+                    onclick="goHome()">
+
+                    <span class="menu-icon">
+                        🏠
+                    </span>
+
+                    <span>
+                        Home
+                    </span>
+
+                </button>
+
+
+                <!-- SETTINGS -->
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    onclick="goToSettings()">
+
+                    <span class="menu-icon">
+                        ⚙️
+                    </span>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </button>
+
+
+                <!-- ABOUT -->
+
+                <button
+                    type="button"
+                    class="menu-item"
+                    onclick="showAbout()">
+
+                    <span class="menu-icon">
+                        ℹ️
+                    </span>
+
+                    <span>
+                        About
+                    </span>
+
+                </button>
+
+
+                <!-- LOGOUT -->
+
+                <button
+                    type="button"
+                    class="menu-item logout"
+                    onclick="logout()">
+
+                    <span class="menu-icon">
+                        🚪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================
+         MAIN
+    ===================================== -->
+
+    <main class="visual-container">
+
+
+        <!-- TITLE -->
+
+        <section class="visual-title">
+
+            <h1>
+                👁️ Visual Assistance
+            </h1>
+
+            <p>
+                AI-powered visual accessibility
+                assistance
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             CAMERA
+        ================================= -->
+
+        <section class="camera-wrapper">
+
+
+            <video
+                id="camera"
+                autoplay
+                playsinline>
+            </video>
+
+
+            <!-- CAMERA PLACEHOLDER -->
+
+            <div
+                class="camera-placeholder"
+                id="cameraPlaceholder">
+
+                <div class="camera-icon">
+                    📷
+                </div>
+
+                <h2>
+                    Camera Assistance
+                </h2>
+
+                <p>
+                    Press Start Assistance
+                    to activate the camera.
+                </p>
+
+            </div>
+
+
+            <!-- CAMERA STATUS -->
+
+            <div class="camera-status">
+
+                <span
+                    class="status-dot"
+                    id="statusDot">
+                </span>
+
+                <span id="cameraStatus">
+                    Camera OFF
+                </span>
+
+            </div>
+
+
+            <!-- PERSON -->
+
+            <div
+                class="detection-box person-box"
+                id="personBox">
+
+                🚶 Person
+
+            </div>
+
+
+            <!-- OBSTACLE -->
+
+            <div
+                class="detection-box obstacle-box"
+                id="obstacleBox">
+
+                🚧 Obstacle
+
+            </div>
+
+
+            <!-- VEHICLE -->
+
+            <div
+                class="detection-box vehicle-box"
+                id="vehicleBox">
+
+                🚗 Vehicle
+
+            </div>
+
+
+            <!-- SIGN -->
+
+            <div
+                class="detection-box sign-box"
+                id="signBox">
+
+                🔤 SIGN
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             AI MESSAGE
+        ================================= -->
+
+        <section class="ai-message">
+
+            <h2>
+                🔊 AI Assistance
+            </h2>
+
+            <p id="aiMessage">
+                Camera assistance is
+                currently off.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             HAZARD
+        ================================= -->
+
+        <section class="hazard-panel">
+
+            <h2>
+                ⚠️ Hazard Status
+            </h2>
+
+            <p id="hazardStatus">
+                No hazard detected
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             TEXT & SIGN
+        ================================= -->
+
+        <section class="text-panel">
+
+
+            <div class="text-icon">
+                🔤
+            </div>
+
+
+            <div class="text-content">
+
+                <h2>
+                    Signs & Text Recognition
+                </h2>
+
+                <p>
+                    FASAL FLOW can identify
+                    visible signs, words and
+                    important information.
+                </p>
+
+
+                <div class="detected-text">
+
+                    Detected Text:
+
+                    <strong id="detectedText">
+                        No text detected
+                    </strong>
+
+                </div>
+
+
+                <p id="textExplanation">
+                    Waiting for camera analysis...
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             DETECTION INFORMATION
+        ================================= -->
+
+        <section class="detection-info">
+
+
+            <!-- PEOPLE -->
+
+            <div class="detection-card">
+
+                <div class="icon">
+                    🚶
+                </div>
+
+                <h3>
+                    People
+                </h3>
+
+                <p id="peopleCount">
+                    0 detected
+                </p>
+
+            </div>
+
+
+            <!-- OBSTACLES -->
+
+            <div class="detection-card">
+
+                <div class="icon">
+                    🚧
+                </div>
+
+                <h3>
+                    Obstacles
+                </h3>
+
+                <p id="obstacleCount">
+                    0 detected
+                </p>
+
+            </div>
+
+
+            <!-- VEHICLES -->
+
+            <div class="detection-card">
+
+                <div class="icon">
+                    🚗
+                </div>
+
+                <h3>
+                    Vehicles
+                </h3>
+
+                <p id="vehicleCount">
+                    0 detected
+                </p>
+
+            </div>
+
+
+            <!-- TEXT -->
+
+            <div class="detection-card">
+
+                <div class="icon">
+                    🔤
+                </div>
+
+                <h3>
+                    Text / Signs
+                </h3>
+
+                <p id="textStatus">
+                    Waiting
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             CONTROLS
+        ================================= -->
+
+        <section class="controls">
+
+
+            <button
+                type="button"
+                class="control-button start-button"
+                onclick="startAssistance()">
+
+                📷 Start Assistance
+
+            </button>
+
+
+            <button
+                type="button"
+                class="control-button stop-button"
+                onclick="stopAssistance()">
+
+                ⏹️ Stop Assistance
+
+            </button>
+
+
+            <button
+                type="button"
+                class="control-button sos-button"
+                onclick="emergencySOS()">
+
+                🆘 Emergency SOS
+
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ===================================== -->
+
+    <footer class="visual-footer">
+
+        ♿ FASAL FLOW • Visual Accessibility Assistant
+
+    </footer>
+
+
+
+    <!-- =====================================
+         EXISTING GLOBAL JAVASCRIPT
+    ===================================== -->
+
+    <script src="../script.js"></script>
+
+
+    <script>
+
+        /* =====================================
+           VARIABLES
+        ===================================== */
+
+        let cameraStream = null;
+
+        let assistanceRunning = false;
+
+        let detectionTimer = null;
+
+        let textDetectionTimer = null;
+
+
+
+        /* =====================================
+           MENU
+        ===================================== */
+
+        function toggleMenu() {
+
+            const dropdown =
+                document.getElementById(
+                    "menuDropdown"
+                );
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+
+            if (!dropdown) {
+                return;
+            }
+
+
+            const isOpen =
+                dropdown.classList.contains(
+                    "show"
+                );
+
+
+            if (isOpen) {
+
+                closeMenu();
+
+            } else {
+
+                openMenu();
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           OPEN MENU
+        ===================================== */
+
+        function openMenu() {
+
+            const dropdown =
+                document.getElementById(
+                    "menuDropdown"
+                );
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+
+            dropdown.classList.add("show");
+
+
+            if (menuButton) {
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           CLOSE MENU
+        ===================================== */
+
+        function closeMenu() {
+
+            const dropdown =
+                document.getElementById(
+                    "menuDropdown"
+                );
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+
+            if (dropdown) {
+
+                dropdown.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            if (menuButton) {
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           CLOSE MENU OUTSIDE CLICK
+        ===================================== */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const container =
+                    document.querySelector(
+                        ".menu-container"
+                    );
+
+
+                if (!container) {
+                    return;
+                }
+
+
+                if (
+                    !container.contains(
+                        event.target
+                    )
+                ) {
+
+                    closeMenu();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================
+           HOME
+        ===================================== */
+        function goHome() {
+    window.location.href = "/Accessibility%20Assistant/frontend/pages/dashboard.html";
+}
+
+
+
+        /* =====================================
+           SETTINGS
+        ===================================== */
+
+        function goToSettings() {
+
+            closeMenu();
+
+
+            window.location.href =
+                "settings.html";
+
+        }
+
+
+
+        /* =====================================
+           ABOUT
+        ===================================== */
+
+        function showAbout() {
+
+            closeMenu();
+
+
+            alert(
+
+                "♿ FASAL FLOW\n\n" +
+
+                "Visual Accessibility Assistant\n\n" +
+
+                "Version 1.0\n\n" +
+
+                "Helping users with visual impairments " +
+
+                "navigate their surroundings safely."
+
+            );
+
+        }
+
+
+
+        /* =====================================
+           LOGOUT
+        ===================================== */
+
+        function logout() {
+
+            closeMenu();
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            if (assistanceRunning) {
+
+                stopAssistance();
+
+            }
+
+
+            localStorage.removeItem(
+                "user"
+            );
+
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+
+        /* =====================================
+           START CAMERA
+        ===================================== */
+
+        async function startCamera() {
+
+            try {
+
+                if (
+                    !navigator.mediaDevices ||
+                    !navigator.mediaDevices.getUserMedia
+                ) {
+
+                    throw new Error(
+                        "Camera API not supported"
+                    );
+
+                }
+
+
+                cameraStream =
+                    await navigator.mediaDevices
+                        .getUserMedia({
+
+                            video: {
+
+                                facingMode: {
+                                    ideal:
+                                        "environment"
+                                }
+
+                            },
+
+                            audio: false
+
+                        });
+
+
+                const video =
+                    document.getElementById(
+                        "camera"
+                    );
+
+
+                video.srcObject =
+                    cameraStream;
+
+
+                video.style.display =
+                    "block";
+
+
+                document.getElementById(
+                    "cameraPlaceholder"
+                ).style.display =
+                    "none";
+
+
+                document.getElementById(
+                    "statusDot"
+                ).classList.add(
+                    "active"
+                );
+
+
+                document.getElementById(
+                    "cameraStatus"
+                ).innerText =
+                    "Camera ACTIVE";
+
+
+                return true;
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Camera error:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "aiMessage"
+                ).innerText =
+                    "Unable to access the camera. Please allow camera permission.";
+
+
+                speakText(
+                    "Unable to access the camera. Please allow camera permission."
+                );
+
+
+                return false;
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           START ASSISTANCE
+        ===================================== */
+
+        async function startAssistance() {
+
+            if (assistanceRunning) {
+
+                speakText(
+                    "Visual assistance is already active."
+                );
+
+                return;
+
+            }
+
+
+            const cameraStarted =
+                await startCamera();
+
+
+            if (!cameraStarted) {
+                return;
+            }
+
+
+            assistanceRunning =
+                true;
+
+
+            document.getElementById(
+                "aiMessage"
+            ).innerText =
+                "Visual assistance is active. Looking ahead.";
+
+
+            speakText(
+                "Visual assistance is active. I am looking ahead."
+            );
+
+
+            startDemoObjectDetection();
+
+            startDemoTextDetection();
+
+        }
+
+
+
+        /* =====================================
+           STOP ASSISTANCE
+        ===================================== */
+
+        function stopAssistance() {
+
+            assistanceRunning =
+                false;
+
+
+            if (detectionTimer) {
+
+                clearTimeout(
+                    detectionTimer
+                );
+
+                detectionTimer = null;
+
+            }
+
+
+            if (textDetectionTimer) {
+
+                clearTimeout(
+                    textDetectionTimer
+                );
+
+                textDetectionTimer = null;
+
+            }
+
+
+            if (cameraStream) {
+
+                cameraStream
+                    .getTracks()
+                    .forEach(
+                        track =>
+                            track.stop()
+                    );
+
+                cameraStream =
+                    null;
+
+            }
+
+
+            document.getElementById(
+                "camera"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "cameraPlaceholder"
+            ).style.display =
+                "flex";
+
+
+            document.getElementById(
+                "statusDot"
+            ).classList.remove(
+                "active"
+            );
+
+
+            document.getElementById(
+                "cameraStatus"
+            ).innerText =
+                "Camera OFF";
+
+
+            document.getElementById(
+                "aiMessage"
+            ).innerText =
+                "Camera assistance is stopped.";
+
+
+            document.getElementById(
+                "hazardStatus"
+            ).innerText =
+                "No hazard detected";
+
+
+            document.getElementById(
+                "personBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "obstacleBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "vehicleBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "signBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "detectedText"
+            ).innerText =
+                "No text detected";
+
+
+            document.getElementById(
+                "textExplanation"
+            ).innerText =
+                "Waiting for camera analysis...";
+
+
+            document.getElementById(
+                "textStatus"
+            ).innerText =
+                "Waiting";
+
+
+            document.getElementById(
+                "peopleCount"
+            ).innerText =
+                "0 detected";
+
+
+            document.getElementById(
+                "obstacleCount"
+            ).innerText =
+                "0 detected";
+
+
+            document.getElementById(
+                "vehicleCount"
+            ).innerText =
+                "0 detected";
+
+
+            speakText(
+                "Visual assistance stopped."
+            );
+
+        }
+
+
+
+        /* =====================================
+           OBJECT DETECTION DEMO
+        ===================================== */
+
+        function startDemoObjectDetection() {
+
+            if (!assistanceRunning) {
+                return;
+            }
+
+
+            const scenarios = [
+
+                {
+
+                    type: "person",
+
+                    message:
+                        "Person detected ahead.",
+
+                    hazard:
+                        "Caution. Person detected ahead.",
+
+                    people: 1,
+
+                    obstacles: 0,
+
+                    vehicles: 0
+
+                },
+
+
+                {
+
+                    type: "obstacle",
+
+                    message:
+                        "Warning. Obstacle detected directly ahead.",
+
+                    hazard:
+                        "HIGH PRIORITY. Obstacle ahead.",
+
+                    people: 0,
+
+                    obstacles: 1,
+
+                    vehicles: 0
+
+                },
+
+
+                {
+
+                    type: "vehicle",
+
+                    message:
+                        "Caution. Vehicle detected nearby.",
+
+                    hazard:
+                        "HIGH PRIORITY. Vehicle nearby.",
+
+                    people: 0,
+
+                    obstacles: 0,
+
+                    vehicles: 1
+
+                },
+
+
+                {
+
+                    type: "clear",
+
+                    message:
+                        "The path ahead appears clear.",
+
+                    hazard:
+                        "No immediate hazard detected.",
+
+                    people: 0,
+
+                    obstacles: 0,
+
+                    vehicles: 0
+
+                }
+
+            ];
+
+
+            const index =
+                Math.floor(
+                    Math.random() *
+                    scenarios.length
+                );
+
+
+            const result =
+                scenarios[index];
+
+
+            showObjectDetection(
+                result
+            );
+
+
+            detectionTimer =
+                setTimeout(
+                    startDemoObjectDetection,
+                    7000
+                );
+
+        }
+
+
+
+        /* =====================================
+           SHOW OBJECT DETECTION
+        ===================================== */
+
+        function showObjectDetection(
+            result
+        ) {
+
+            document.getElementById(
+                "aiMessage"
+            ).innerText =
+                result.message;
+
+
+            document.getElementById(
+                "hazardStatus"
+            ).innerText =
+                result.hazard;
+
+
+            document.getElementById(
+                "peopleCount"
+            ).innerText =
+                result.people +
+                " detected";
+
+
+            document.getElementById(
+                "obstacleCount"
+            ).innerText =
+                result.obstacles +
+                " detected";
+
+
+            document.getElementById(
+                "vehicleCount"
+            ).innerText =
+                result.vehicles +
+                " detected";
+
+
+            document.getElementById(
+                "personBox"
+            ).style.display =
+                result.type === "person"
+                    ? "block"
+                    : "none";
+
+
+            document.getElementById(
+                "obstacleBox"
+            ).style.display =
+                result.type === "obstacle"
+                    ? "block"
+                    : "none";
+
+
+            document.getElementById(
+                "vehicleBox"
+            ).style.display =
+                result.type === "vehicle"
+                    ? "block"
+                    : "none";
+
+
+            if (
+                result.type !== "clear"
+            ) {
+
+                speakText(
+                    result.message
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           TEXT DETECTION DEMO
+        ===================================== */
+
+        function startDemoTextDetection() {
+
+            if (!assistanceRunning) {
+                return;
+            }
+
+
+            const signs = [
+
+                {
+
+                    text: "STOP",
+
+                    explanation:
+                        "This is a stop sign. You should stop here."
+
+                },
+
+
+                {
+
+                    text: "EXIT",
+
+                    explanation:
+                        "There is an exit sign in front of you."
+
+                },
+
+
+                {
+
+                    text:
+                        "DANGER - HIGH VOLTAGE",
+
+                    explanation:
+                        "Warning. This sign indicates high voltage. Avoid this area."
+
+                },
+
+
+                {
+
+                    text: "TOILET",
+
+                    explanation:
+                        "This sign indicates a toilet."
+
+                },
+
+
+                {
+
+                    text: "PLATFORM 2",
+
+                    explanation:
+                        "This sign indicates platform number 2."
+
+                },
+
+
+                {
+
+                    text: "HOSPITAL",
+
+                    explanation:
+                        "This sign indicates a hospital."
+
+                },
+
+
+                {
+
+                    text: "NO ENTRY",
+
+                    explanation:
+                        "Warning. This area is marked as no entry."
+
+                },
+
+
+                {
+
+                    text: "ROOM 204",
+
+                    explanation:
+                        "The visible text indicates room number 204."
+
+                }
+
+            ];
+
+
+            const index =
+                Math.floor(
+                    Math.random() *
+                    signs.length
+                );
+
+
+            const sign =
+                signs[index];
+
+
+            showTextDetection(
+                sign
+            );
+
+
+            textDetectionTimer =
+                setTimeout(
+                    startDemoTextDetection,
+                    12000
+                );
+
+        }
+
+
+
+        /* =====================================
+           SHOW TEXT DETECTION
+        ===================================== */
+
+        function showTextDetection(
+            sign
+        ) {
+
+            document.getElementById(
+                "detectedText"
+            ).innerText =
+                sign.text;
+
+
+            document.getElementById(
+                "textExplanation"
+            ).innerText =
+                sign.explanation;
+
+
+            document.getElementById(
+                "textStatus"
+            ).innerText =
+                "Text detected";
+
+
+            document.getElementById(
+                "signBox"
+            ).style.display =
+                "block";
+
+
+            speakText(
+                sign.explanation
+            );
+
+        }
+
+
+
+        /* =====================================
+           TEXT TO SPEECH
+        ===================================== */
+
+        function speakText(
+            text
+        ) {
+
+            if (
+                !(
+                    "speechSynthesis"
+                    in window
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            window.speechSynthesis.cancel();
+
+
+            const speech =
+                new SpeechSynthesisUtterance(
+                    text
+                );
+
+
+            speech.rate =
+                0.9;
+
+            speech.pitch =
+                1;
+
+            speech.volume =
+                1;
+
+
+            window.speechSynthesis.speak(
+                speech
+            );
+
+        }
+
+
+
+        /* =====================================
+           EMERGENCY SOS
+        ===================================== */
+
+        function emergencySOS() {
+
+            const confirmed =
+                confirm(
+                    "Do you want to activate Emergency SOS?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            document.getElementById(
+                "aiMessage"
+            ).innerText =
+                "Emergency SOS activated.";
+
+
+            speakText(
+                "Emergency SOS activated."
+            );
+
+        }
+
+
+
+        /* =====================================
+           PAGE CLEANUP
+        ===================================== */
+
+        window.addEventListener(
+            "beforeunload",
+            function() {
+
+                if (cameraStream) {
+
+                    cameraStream
+                        .getTracks()
+                        .forEach(
+                            track =>
+                                track.stop()
+                        );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -256,7 +256,7 @@
     </div>
 
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('name').value;
@@ -271,11 +271,38 @@
                 return;
             }
             
-            // Add your signup logic here
-            console.log('Signup attempt:', { name, email, password, disability });
+            // Send data to PHP backend
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('confirmPassword', confirmPassword);
+            formData.append('disability', disability);
             
-            // For demo purposes, redirect to login
-            window.location.href = 'login.html';
+            try {
+                const response = await fetch('../../backend/signup.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                console.log('Signup result:', result);
+                
+                if (result.success) {
+                    alert(result.message);
+                    window.location.href = 'login.html';
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
         });
     </script>
 </body>
