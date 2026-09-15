@@ -743,23 +743,37 @@ button {
         <div class="announcement">
 
             <p>
-                Type a message to communicate with another person.
+                Other person speaks and their speech is converted into text.
             </p>
 
             <div class="communication">
 
-                <input
-                    type="text"
-                    id="message"
-                    placeholder="Type your message..."
-                >
-
                 <button
                     class="send"
-                    onclick="sendMessage()">
-                    Send
+                    id="startListening"
+                    onclick="startCommunicationListening()">
+                    🎤 Start Listening
                 </button>
 
+                <button
+                    class="stop"
+                    id="stopListening"
+                    onclick="stopCommunicationListening()">
+                    ■ Stop
+                </button>
+
+            </div>
+
+            <div
+                id="communicationStatus"
+                style="margin-top:15px;color:#2563eb;font-weight:600;">
+                ● Ready to listen
+            </div>
+
+            <div
+                id="communicationText"
+                style="margin-top:15px;background:#111827;color:white;padding:20px;border-radius:12px;font-size:22px;min-height:90px;">
+                The other person's speech will appear here as text.
             </div>
 
         </div>
@@ -900,25 +914,148 @@ function announcement() {
 
 /* ---------- COMMUNICATION ---------- */
 
-function sendMessage() {
+let communicationRecognition;
+let communicationListening = false;
 
-    const input =
-        document.getElementById("message");
+function startCommunicationListening() {
 
-    if (input.value.trim() === "") {
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-        alert("Please type a message.");
+    if (!SpeechRecognition) {
+
+        alert(
+            "Speech recognition is not supported in this browser. " +
+            "Please use Google Chrome."
+        );
 
         return;
-
     }
 
-    alert(
-        "💬 Message\n\n" +
-        input.value
-    );
+    if (!communicationRecognition) {
 
-    input.value = "";
+        communicationRecognition = new SpeechRecognition();
+
+        communicationRecognition.continuous = true;
+        communicationRecognition.interimResults = true;
+        communicationRecognition.lang = "en-IN";
+
+        communicationRecognition.onstart = function() {
+
+            communicationListening = true;
+
+            document.getElementById("communicationStatus").innerHTML =
+                "🔵 Listening... Other person can speak now.";
+
+        };
+
+        communicationRecognition.onresult = function(event) {
+
+            let finalText = "";
+            let interimText = "";
+
+            for (
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ) {
+
+                const transcript =
+                    event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+
+                    finalText += transcript + " ";
+
+                } else {
+
+                    interimText += transcript;
+
+                }
+
+            }
+
+            const textElement =
+                document.getElementById("communicationText");
+
+            const existingText =
+                textElement.dataset.finalText || "";
+
+            const combinedText =
+                existingText + finalText;
+
+            textElement.dataset.finalText =
+                combinedText;
+
+            textElement.innerHTML =
+                combinedText +
+                '<span style="opacity:0.55;">' +
+                interimText +
+                '</span>';
+
+        };
+
+        communicationRecognition.onerror = function(event) {
+
+            document.getElementById("communicationStatus").innerHTML =
+                "⚠️ Speech recognition error: " + event.error;
+
+        };
+
+        communicationRecognition.onend = function() {
+
+            if (communicationListening) {
+
+                try {
+                    communicationRecognition.start();
+                } catch (e) {
+                    // Recognition may already be starting.
+                }
+
+            } else {
+
+                document.getElementById("communicationStatus").innerHTML =
+                    "● Listening stopped";
+
+            }
+
+        };
+    }
+
+    communicationListening = true;
+
+    try {
+        communicationRecognition.start();
+    } catch (e) {
+        document.getElementById("communicationStatus").innerHTML =
+            "🔵 Listening... Other person can speak now.";
+    }
+
+}
+
+function stopCommunicationListening() {
+
+    communicationListening = false;
+
+    if (communicationRecognition) {
+        communicationRecognition.stop();
+    }
+
+    document.getElementById("communicationStatus").innerHTML =
+        "● Listening stopped";
+
+}
+
+function clearCommunicationText() {
+
+    const textElement =
+        document.getElementById("communicationText");
+
+    textElement.dataset.finalText = "";
+
+    textElement.innerHTML =
+        "The other person's speech will appear here as text.";
 
 }
 
@@ -957,4 +1094,5 @@ function scrollToSection(id) {
 
 </body>
 </html>
+
 ```
