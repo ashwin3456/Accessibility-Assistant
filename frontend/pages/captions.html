@@ -1,0 +1,628 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Captions | DeafAssist</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172033;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 18px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.menu li:hover,
+.menu li.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    padding: 35px;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+.header p {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* CAPTION AREA */
+
+.caption-container {
+    background: #111827;
+    border-radius: 20px;
+    padding: 30px;
+    min-height: 430px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.caption-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.listening {
+    color: #60a5fa;
+    font-size: 14px;
+}
+
+.caption-screen {
+    background: #1f2937;
+    border-radius: 15px;
+    min-height: 250px;
+    padding: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.caption-text {
+    color: white;
+    font-size: 32px;
+    line-height: 1.5;
+}
+
+/* CONTROLS */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+button {
+    border: none;
+    padding: 13px 25px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.start {
+    background: #2563eb;
+    color: white;
+}
+
+.stop {
+    background: #dc2626;
+    color: white;
+}
+
+.clear {
+    background: #475569;
+    color: white;
+}
+
+/* INFO CARDS */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.info-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.info-icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.info-card h3 {
+    margin-bottom: 7px;
+}
+
+.info-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* TRANSCRIPT */
+
+.transcript {
+    margin-top: 25px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.transcript h2 {
+    margin-bottom: 15px;
+}
+
+.transcript-line {
+    padding: 12px;
+    background: #f1f5f9;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 800px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .menu li {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .main {
+        margin-left: 70px;
+        padding: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .caption-text {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        ♿ Deaf<span>Assist</span>
+    </div>
+
+    <ul class="menu">
+
+        <li onclick="goDashboard()">
+            🏠 Dashboard
+        </li>
+
+        <li class="active">
+            🎤 Live Captions
+        </li>
+
+        <li onclick="goAlerts()">
+            🔔 Sound Alerts
+        </li>
+
+        <li onclick="goAnnouncements()">
+            📢 Announcements
+        </li>
+
+        <li onclick="goCommunication()">
+            💬 Communication
+        </li>
+
+    </ul>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+            <h1>🎤 Live Captions</h1>
+
+            <p>
+                Convert spoken words into readable text
+            </p>
+        </div>
+
+        <div class="status" id="status">
+            ● Ready
+        </div>
+
+    </header>
+
+
+    <!-- CAPTION SCREEN -->
+
+    <section class="caption-container">
+
+        <div class="caption-header">
+
+            <h2>Live Conversation</h2>
+
+            <div class="listening" id="listening">
+                Microphone Off
+            </div>
+
+        </div>
+
+
+        <div class="caption-screen">
+
+            <div class="caption-text" id="captionText">
+
+                Press "Start Captions" to begin.
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <button
+                class="start"
+                onclick="startCaptions()">
+
+                🎤 Start Captions
+
+            </button>
+
+            <button
+                class="stop"
+                onclick="stopCaptions()">
+
+                ⏹ Stop
+
+            </button>
+
+            <button
+                class="clear"
+                onclick="clearCaption()">
+
+                🗑 Clear
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+
+    <section class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-icon">🎤</div>
+
+            <h3>Speech Detection</h3>
+
+            <p>
+                Captures spoken words through the microphone
+                and converts them into text.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">📝</div>
+
+            <h3>Real-Time Text</h3>
+
+            <p>
+                Displays detected speech as readable captions
+                on the screen.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">♿</div>
+
+            <h3>Accessibility</h3>
+
+            <p>
+                Helps deaf and hard-of-hearing users understand
+                spoken conversations.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRANSCRIPT -->
+
+    <section class="transcript">
+
+        <h2>📝 Conversation Transcript</h2>
+
+        <div id="transcript">
+
+            <div class="transcript-line">
+                No conversation recorded yet.
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/*
+    LIVE SPEECH RECOGNITION
+
+    Uses the browser's Web Speech API.
+*/
+
+let recognition;
+let isListening = false;
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+/* START */
+
+function startCaptions() {
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Live speech recognition is not supported " +
+            "in this browser. Please use Google Chrome."
+        );
+
+        return;
+    }
+
+    recognition = new SpeechRecognition();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-IN";
+
+    recognition.onstart = function() {
+
+        isListening = true;
+
+        document.getElementById("status").innerHTML =
+            "🔵 Listening";
+
+        document.getElementById("listening").innerHTML =
+            "🎤 Microphone Active";
+
+    };
+
+
+    recognition.onresult = function(event) {
+
+        let finalText = "";
+        let interimText = "";
+
+        for (
+            let i = event.resultIndex;
+            i < event.results.length;
+            i++
+        ) {
+
+            const transcript =
+                event.results[i][0].transcript;
+
+            if (event.results[i].isFinal) {
+
+                finalText += transcript;
+
+                addTranscript(transcript);
+
+            } else {
+
+                interimText += transcript;
+
+            }
+
+        }
+
+        document.getElementById("captionText").innerHTML =
+            finalText || interimText;
+
+    };
+
+
+    recognition.onerror = function(event) {
+
+        console.log("Speech recognition error:", event.error);
+
+    };
+
+
+    recognition.onend = function() {
+
+        if (isListening) {
+
+            recognition.start();
+
+        }
+
+    };
+
+
+    recognition.start();
+
+}
+
+
+/* STOP */
+
+function stopCaptions() {
+
+    isListening = false;
+
+    if (recognition) {
+
+        recognition.stop();
+
+    }
+
+    document.getElementById("status").innerHTML =
+        "● Stopped";
+
+    document.getElementById("listening").innerHTML =
+        "Microphone Off";
+
+}
+
+
+/* CLEAR */
+
+function clearCaption() {
+
+    document.getElementById("captionText").innerHTML =
+        "Press \"Start Captions\" to begin.";
+
+    document.getElementById("transcript").innerHTML =
+        '<div class="transcript-line">' +
+        'No conversation recorded yet.' +
+        '</div>';
+
+}
+
+
+/* ADD TRANSCRIPT */
+
+function addTranscript(text) {
+
+    const transcript =
+        document.getElementById("transcript");
+
+    const line =
+        document.createElement("div");
+
+    line.className = "transcript-line";
+
+    line.innerHTML = "🗣️ " + text;
+
+    transcript.appendChild(line);
+
+}
+
+
+/* PAGE NAVIGATION */
+
+function goDashboard() {
+    window.location.href = "index.html";
+}
+
+function goAlerts() {
+    window.location.href = "alerts.html";
+}
+
+function goAnnouncements() {
+    window.location.href = "announcements.html";
+}
+
+function goCommunication() {
+    window.location.href = "communication.html";
+}
+
+</script>
+
+</body>
+</html>
+```
