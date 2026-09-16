@@ -1,0 +1,23 @@
+path: ./dataset
+
+train: images/train
+val: images/val
+
+names:
+  0: person
+  1: car
+  2: bus
+  3: truck
+  4: motorcycle
+  5: bicycle
+  6: pothole
+  7: stairs
+  8: curb
+  9: pole
+  10: traffic_light
+  11: stop_sign
+  12: no_entry
+  13: pedestrian_crossing
+  14: speed_limit
+  15: warning_sign
+  16: chair

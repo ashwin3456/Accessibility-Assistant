@@ -1897,9 +1897,7 @@
             );
 
 
-            startDemoObjectDetection();
-
-            startDemoTextDetection();
+            startRealAIDetection();
 
         }
 
@@ -1917,7 +1915,7 @@
 
             if (detectionTimer) {
 
-                clearTimeout(
+                clearInterval(
                     detectionTimer
                 );
 
@@ -2058,361 +2056,502 @@
 
 
         /* =====================================
-           OBJECT DETECTION DEMO
+           REAL AI DETECTION
+           FastAPI + YOLO + OCR
         ===================================== */
 
-        function startDemoObjectDetection() {
+        const AI_API_URL = "http://127.0.0.1:8000";
+
+        let aiDetectionBusy = false;
+        let lastSpokenMessage = "";
+        let lastSpokenTime = 0;
+
+        function startRealAIDetection() {
 
             if (!assistanceRunning) {
                 return;
             }
 
+            if (detectionTimer) {
+                clearInterval(detectionTimer);
+                detectionTimer = null;
+            }
 
-            const scenarios = [
+            // Run immediately, then every 1.5 seconds.
+            detectCurrentFrame();
 
-                {
-
-                    type: "person",
-
-                    message:
-                        "Person detected ahead.",
-
-                    hazard:
-                        "Caution. Person detected ahead.",
-
-                    people: 1,
-
-                    obstacles: 0,
-
-                    vehicles: 0
-
-                },
-
-
-                {
-
-                    type: "obstacle",
-
-                    message:
-                        "Warning. Obstacle detected directly ahead.",
-
-                    hazard:
-                        "HIGH PRIORITY. Obstacle ahead.",
-
-                    people: 0,
-
-                    obstacles: 1,
-
-                    vehicles: 0
-
-                },
-
-
-                {
-
-                    type: "vehicle",
-
-                    message:
-                        "Caution. Vehicle detected nearby.",
-
-                    hazard:
-                        "HIGH PRIORITY. Vehicle nearby.",
-
-                    people: 0,
-
-                    obstacles: 0,
-
-                    vehicles: 1
-
-                },
-
-
-                {
-
-                    type: "clear",
-
-                    message:
-                        "The path ahead appears clear.",
-
-                    hazard:
-                        "No immediate hazard detected.",
-
-                    people: 0,
-
-                    obstacles: 0,
-
-                    vehicles: 0
-
-                }
-
-            ];
-
-
-            const index =
-                Math.floor(
-                    Math.random() *
-                    scenarios.length
-                );
-
-
-            const result =
-                scenarios[index];
-
-
-            showObjectDetection(
-                result
+            detectionTimer = setInterval(
+                detectCurrentFrame,
+                1500
             );
-
-
-            detectionTimer =
-                setTimeout(
-                    startDemoObjectDetection,
-                    7000
-                );
-
         }
 
 
+        async function detectCurrentFrame() {
 
-        /* =====================================
-           SHOW OBJECT DETECTION
-        ===================================== */
+            if (!assistanceRunning || aiDetectionBusy) {
+                return;
+            }
 
-        function showObjectDetection(
-            result
-        ) {
+            const video =
+                document.getElementById("camera");
 
-            document.getElementById(
-                "aiMessage"
-            ).innerText =
-                result.message;
+            if (
+                !video ||
+                video.readyState < 2 ||
+                video.videoWidth === 0 ||
+                video.videoHeight === 0
+            ) {
+                return;
+            }
+
+            aiDetectionBusy = true;
+
+            try {
+
+                // Create an invisible canvas and capture the current camera frame.
+                const canvas =
+                    document.createElement("canvas");
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                const context =
+                    canvas.getContext("2d");
+
+                context.drawImage(
+                    video,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                // Convert the frame to JPEG.
+                const blob =
+                    await new Promise(resolve => {
+                        canvas.toBlob(
+                            resolve,
+                            "image/jpeg",
+                            0.80
+                        );
+                    });
+
+                if (!blob) {
+                    throw new Error("Could not capture camera frame.");
+                }
+
+                // Send the image to FastAPI.
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "file",
+                    blob,
+                    "camera.jpg"
+                );
+
+                const response =
+                    await fetch(
+                        `${AI_API_URL}/api/visual/detect`,
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+                if (!response.ok) {
+
+                    let errorMessage =
+                        `Backend returned HTTP ${response.status}`;
+
+                    try {
+                        const errorData =
+                            await response.json();
+
+                        if (errorData.detail) {
+                            errorMessage =
+                                errorData.detail;
+                        }
+                    } catch (e) {
+                        // Keep the HTTP error message.
+                    }
+
+                    throw new Error(errorMessage);
+                }
+
+                const data =
+                    await response.json();
+
+                if (!data.success) {
+                    throw new Error(
+                        "AI detection failed."
+                    );
+                }
+
+                updateRealAIResult(data);
+
+            } catch (error) {
+
+                console.error(
+                    "Visual AI error:",
+                    error
+                );
+
+                document.getElementById(
+                    "aiMessage"
+                ).innerText =
+                    "Unable to connect to the Visual AI backend.";
+
+                document.getElementById(
+                    "hazardStatus"
+                ).innerText =
+                    "Backend connection error";
+
+                document.getElementById(
+                    "textExplanation"
+                ).innerText =
+                    "Make sure FastAPI is running at http://127.0.0.1:8000";
+
+            } finally {
+
+                aiDetectionBusy = false;
+            }
+        }
 
 
-            document.getElementById(
-                "hazardStatus"
-            ).innerText =
-                result.hazard;
+        function updateRealAIResult(data) {
 
+            const analysis =
+                data.analysis || {};
+
+            const detections =
+                Array.isArray(data.detections)
+                    ? data.detections
+                    : [];
+
+            const people =
+                Array.isArray(analysis.people)
+                    ? analysis.people
+                    : [];
+
+            const obstacles =
+                Array.isArray(analysis.obstacles)
+                    ? analysis.obstacles
+                    : [];
+
+            const vehicles =
+                Array.isArray(analysis.vehicles)
+                    ? analysis.vehicles
+                    : [];
+
+            const signs =
+                Array.isArray(analysis.signs)
+                    ? analysis.signs
+                    : [];
+
+
+            /* ---------------------------------
+               COUNTS
+            --------------------------------- */
 
             document.getElementById(
                 "peopleCount"
             ).innerText =
-                result.people +
-                " detected";
-
+                `${people.length} detected`;
 
             document.getElementById(
                 "obstacleCount"
             ).innerText =
-                result.obstacles +
-                " detected";
-
+                `${obstacles.length} detected`;
 
             document.getElementById(
                 "vehicleCount"
             ).innerText =
-                result.vehicles +
-                " detected";
-
-
-            document.getElementById(
-                "personBox"
-            ).style.display =
-                result.type === "person"
-                    ? "block"
-                    : "none";
-
-
-            document.getElementById(
-                "obstacleBox"
-            ).style.display =
-                result.type === "obstacle"
-                    ? "block"
-                    : "none";
-
-
-            document.getElementById(
-                "vehicleBox"
-            ).style.display =
-                result.type === "vehicle"
-                    ? "block"
-                    : "none";
-
-
-            if (
-                result.type !== "clear"
-            ) {
-
-                speakText(
-                    result.message
-                );
-
-            }
-
-        }
-
-
-
-        /* =====================================
-           TEXT DETECTION DEMO
-        ===================================== */
-
-        function startDemoTextDetection() {
-
-            if (!assistanceRunning) {
-                return;
-            }
-
-
-            const signs = [
-
-                {
-
-                    text: "STOP",
-
-                    explanation:
-                        "This is a stop sign. You should stop here."
-
-                },
-
-
-                {
-
-                    text: "EXIT",
-
-                    explanation:
-                        "There is an exit sign in front of you."
-
-                },
-
-
-                {
-
-                    text:
-                        "DANGER - HIGH VOLTAGE",
-
-                    explanation:
-                        "Warning. This sign indicates high voltage. Avoid this area."
-
-                },
-
-
-                {
-
-                    text: "TOILET",
-
-                    explanation:
-                        "This sign indicates a toilet."
-
-                },
-
-
-                {
-
-                    text: "PLATFORM 2",
-
-                    explanation:
-                        "This sign indicates platform number 2."
-
-                },
-
-
-                {
-
-                    text: "HOSPITAL",
-
-                    explanation:
-                        "This sign indicates a hospital."
-
-                },
-
-
-                {
-
-                    text: "NO ENTRY",
-
-                    explanation:
-                        "Warning. This area is marked as no entry."
-
-                },
-
-
-                {
-
-                    text: "ROOM 204",
-
-                    explanation:
-                        "The visible text indicates room number 204."
-
-                }
-
-            ];
-
-
-            const index =
-                Math.floor(
-                    Math.random() *
-                    signs.length
-                );
-
-
-            const sign =
-                signs[index];
-
-
-            showTextDetection(
-                sign
-            );
-
-
-            textDetectionTimer =
-                setTimeout(
-                    startDemoTextDetection,
-                    12000
-                );
-
-        }
-
-
-
-        /* =====================================
-           SHOW TEXT DETECTION
-        ===================================== */
-
-        function showTextDetection(
-            sign
-        ) {
-
-            document.getElementById(
-                "detectedText"
-            ).innerText =
-                sign.text;
-
-
-            document.getElementById(
-                "textExplanation"
-            ).innerText =
-                sign.explanation;
-
+                `${vehicles.length} detected`;
 
             document.getElementById(
                 "textStatus"
             ).innerText =
-                "Text detected";
+                signs.length > 0
+                    ? "Sign detected"
+                    : "No sign detected";
 
+
+            /* ---------------------------------
+               AI MESSAGE + HAZARD
+            --------------------------------- */
+
+            const message =
+                analysis.message ||
+                "The path ahead appears clear.";
+
+            const hazard =
+                analysis.hazard ||
+                "SAFE";
 
             document.getElementById(
-                "signBox"
-            ).style.display =
-                "block";
+                "aiMessage"
+            ).innerText = message;
+
+            document.getElementById(
+                "hazardStatus"
+            ).innerText = hazard;
 
 
-            speakText(
-                sign.explanation
-            );
+            /* ---------------------------------
+               DETECTION BOXES
+            --------------------------------- */
 
+            hideDetectionBoxes();
+
+            if (people.length > 0) {
+                showRealDetectionBox(
+                    "personBox",
+                    people[0],
+                    "🚶 Person"
+                );
+            }
+
+            if (obstacles.length > 0) {
+                showRealDetectionBox(
+                    "obstacleBox",
+                    obstacles[0],
+                    `🚧 ${formatClassName(obstacles[0].class_name)}`
+                );
+            }
+
+            if (vehicles.length > 0) {
+                showRealDetectionBox(
+                    "vehicleBox",
+                    vehicles[0],
+                    `🚗 ${formatClassName(vehicles[0].class_name)}`
+                );
+            }
+
+            if (signs.length > 0) {
+                showRealDetectionBox(
+                    "signBox",
+                    signs[0],
+                    `🔤 ${formatClassName(signs[0].class_name)}`
+                );
+            }
+
+
+            /* ---------------------------------
+               OCR / TEXT
+            --------------------------------- */
+
+            const ocr =
+                data.ocr || {};
+
+            const detectedText =
+                (ocr.text || "").trim();
+
+            if (ocr.detected && detectedText) {
+
+                document.getElementById(
+                    "detectedText"
+                ).innerText =
+                    detectedText;
+
+                document.getElementById(
+                    "textExplanation"
+                ).innerText =
+                    `Text detected: ${detectedText}`;
+
+                document.getElementById(
+                    "textStatus"
+                ).innerText =
+                    "Text detected";
+
+                document.getElementById(
+                    "signBox"
+                ).style.display =
+                    "block";
+
+            } else if (signs.length === 0) {
+
+                document.getElementById(
+                    "detectedText"
+                ).innerText =
+                    "No text detected";
+
+                document.getElementById(
+                    "textExplanation"
+                ).innerText =
+                    "No readable sign text detected.";
+
+            }
+
+
+            /* ---------------------------------
+               VOICE WARNING
+            --------------------------------- */
+
+            if (
+                message &&
+                hazard !== "SAFE"
+            ) {
+
+                speakWarning(
+                    message
+                );
+            }
         }
 
+
+        function showRealDetectionBox(
+            elementId,
+            detection,
+            label
+        ) {
+
+            const box =
+                document.getElementById(
+                    elementId
+                );
+
+            const video =
+                document.getElementById(
+                    "camera"
+                );
+
+            if (!box || !video || !detection.box) {
+                return;
+            }
+
+            const x1 =
+                Number(detection.box.x1) || 0;
+
+            const y1 =
+                Number(detection.box.y1) || 0;
+
+            const x2 =
+                Number(detection.box.x2) || 0;
+
+            const y2 =
+                Number(detection.box.y2) || 0;
+
+            const videoWidth =
+                video.videoWidth || 1;
+
+            const videoHeight =
+                video.videoHeight || 1;
+
+            // Convert YOLO image coordinates into percentages.
+            let left =
+                (x1 / videoWidth) * 100;
+
+            let top =
+                (y1 / videoHeight) * 100;
+
+            let width =
+                ((x2 - x1) / videoWidth) * 100;
+
+            let height =
+                ((y2 - y1) / videoHeight) * 100;
+
+            // Keep values inside the camera area.
+            left = Math.max(
+                0,
+                Math.min(95, left)
+            );
+
+            top = Math.max(
+                0,
+                Math.min(90, top)
+            );
+
+            width = Math.max(
+                8,
+                Math.min(95 - left, width)
+            );
+
+            height = Math.max(
+                8,
+                Math.min(90 - top, height)
+            );
+
+            box.style.left =
+                `${left}%`;
+
+            box.style.top =
+                `${top}%`;
+
+            box.style.width =
+                `${width}%`;
+
+            box.style.height =
+                `${height}%`;
+
+            box.style.bottom =
+                "auto";
+
+            box.style.right =
+                "auto";
+
+            box.innerText =
+                `${label} ${Math.round(
+                    (Number(detection.confidence) || 0) * 100
+                )}%`;
+
+            box.style.display =
+                "block";
+        }
+
+
+        function hideDetectionBoxes() {
+
+            [
+                "personBox",
+                "obstacleBox",
+                "vehicleBox",
+                "signBox"
+            ].forEach(id => {
+
+                const element =
+                    document.getElementById(id);
+
+                if (element) {
+                    element.style.display =
+                        "none";
+                }
+            });
+        }
+
+
+        function formatClassName(name) {
+
+            return String(name || "object")
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, letter =>
+                    letter.toUpperCase()
+                );
+        }
+
+
+        function speakWarning(message) {
+
+            const now =
+                Date.now();
+
+            // Avoid repeating the same warning continuously.
+            if (
+                message === lastSpokenMessage &&
+                now - lastSpokenTime < 5000
+            ) {
+                return;
+            }
+
+            lastSpokenMessage =
+                message;
+
+            lastSpokenTime =
+                now;
+
+            speakText(message);
+        }
 
 
         /* =====================================
