@@ -1,0 +1,691 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Navigation | DeafAssist</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172033;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 18px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.menu li:hover,
+.menu li.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    padding: 35px;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+.header p {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* LOCATION SEARCH */
+
+.search-box {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.search-box h2 {
+    margin-bottom: 15px;
+}
+
+.search-area {
+    display: flex;
+    gap: 10px;
+}
+
+.search-area input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.search-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.location-btn {
+    background: #475569;
+    color: white;
+}
+
+/* MAP */
+
+.map-container {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.map {
+    height: 350px;
+    border-radius: 14px;
+    background:
+        linear-gradient(90deg, transparent 48%, #d1d5db 49%, #d1d5db 51%, transparent 52%),
+        linear-gradient(0deg, transparent 48%, #d1d5db 49%, #d1d5db 51%, transparent 52%),
+        #e5e7eb;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ROADS */
+
+.road {
+    position: absolute;
+    background: white;
+}
+
+.road.horizontal {
+    width: 100%;
+    height: 35px;
+    top: 45%;
+}
+
+.road.vertical {
+    height: 100%;
+    width: 35px;
+    left: 55%;
+}
+
+.road.diagonal {
+    width: 120%;
+    height: 25px;
+    top: 60%;
+    left: -10%;
+    transform: rotate(-25deg);
+}
+
+/* LOCATION PIN */
+
+.pin {
+    position: absolute;
+    font-size: 38px;
+    left: 52%;
+    top: 40%;
+}
+
+/* DESTINATION */
+
+.destination {
+    position: absolute;
+    font-size: 35px;
+    right: 18%;
+    bottom: 20%;
+}
+
+/* ROUTE */
+
+.route-line {
+    position: absolute;
+    width: 220px;
+    height: 6px;
+    background: #2563eb;
+    top: 48%;
+    left: 52%;
+    transform: rotate(25deg);
+    transform-origin: left;
+    border-radius: 10px;
+}
+
+/* NAVIGATION INFO */
+
+.navigation-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.info-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.info-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.info-card h3 {
+    margin-bottom: 7px;
+}
+
+.info-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* VISUAL ALERTS */
+
+.alert-section {
+    margin-top: 25px;
+}
+
+.alert-box {
+    background: #fff7ed;
+    border-left: 5px solid #f97316;
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 12px;
+}
+
+.alert-box.safe {
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+}
+
+/* DIRECTIONS */
+
+.directions {
+    margin-top: 25px;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.direction {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin-top: 10px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.direction-icon {
+    font-size: 28px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 800px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .menu li {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .main {
+        margin-left: 70px;
+        padding: 20px;
+    }
+
+    .navigation-info {
+        grid-template-columns: 1fr;
+    }
+
+    .search-area {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        ♿ Deaf<span>Assist</span>
+    </div>
+
+    <ul class="menu">
+
+        <li onclick="goDashboard()">
+            🏠 Dashboard
+        </li>
+
+        <li onclick="goCaptions()">
+            🎤 Live Captions
+        </li>
+
+        <li onclick="goAlerts()">
+            🔔 Sound Alerts
+        </li>
+
+        <li class="active">
+            🧭 Navigation
+        </li>
+
+        <li onclick="goAnnouncements()">
+            📢 Announcements
+        </li>
+
+        <li onclick="goCommunication()">
+            💬 Communication
+        </li>
+
+    </ul>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+            <h1>🧭 Visual Navigation</h1>
+
+            <p>
+                Visual directions and environmental alerts
+            </p>
+        </div>
+
+        <div class="status">
+            ● Navigation Active
+        </div>
+
+    </header>
+
+
+    <!-- SEARCH -->
+
+    <section class="search-box">
+
+        <h2>📍 Find a Destination</h2>
+
+        <div class="search-area">
+
+            <input
+                type="text"
+                id="destinationInput"
+                placeholder="Enter destination..."
+            >
+
+            <button
+                class="search-btn"
+                onclick="searchDestination()">
+                🔍 Search
+            </button>
+
+            <button
+                class="location-btn"
+                onclick="getLocation()">
+                📍 My Location
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAP -->
+
+    <section class="map-container">
+
+        <h2>🗺️ Route Map</h2>
+
+        <br>
+
+        <div class="map">
+
+            <div class="road horizontal"></div>
+
+            <div class="road vertical"></div>
+
+            <div class="road diagonal"></div>
+
+            <div class="route-line"></div>
+
+            <div class="pin">
+                📍
+            </div>
+
+            <div class="destination">
+                🏁
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION INFO -->
+
+    <section class="navigation-info">
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                📍
+            </div>
+
+            <h3>Current Location</h3>
+
+            <p id="locationText">
+                Location not detected
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                🏁
+            </div>
+
+            <h3>Destination</h3>
+
+            <p id="destinationText">
+                No destination selected
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                ⏱️
+            </div>
+
+            <h3>Estimated Time</h3>
+
+            <p id="timeText">
+                -- minutes
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- VISUAL ALERTS -->
+
+    <section class="alert-section">
+
+        <h2>⚠️ Visual Navigation Alerts</h2>
+
+        <div class="alert-box">
+
+            🚗 <strong>Vehicle Alert:</strong>
+            Vehicle approaching from your right.
+
+        </div>
+
+        <div class="alert-box">
+
+            🚧 <strong>Obstacle Alert:</strong>
+            Construction area detected ahead.
+
+        </div>
+
+        <div class="alert-box safe">
+
+            ✅ <strong>Safe Route:</strong>
+            Current route appears clear.
+
+        </div>
+
+    </section>
+
+
+    <!-- DIRECTIONS -->
+
+    <section class="directions">
+
+        <h2>➡️ Step-by-Step Directions</h2>
+
+        <div class="direction">
+
+            <div class="direction-icon">⬆️</div>
+
+            <div>
+                <strong>Go Straight</strong>
+                <p>Continue for approximately 200 meters.</p>
+            </div>
+
+        </div>
+
+
+        <div class="direction">
+
+            <div class="direction-icon">↗️</div>
+
+            <div>
+                <strong>Turn Right</strong>
+                <p>Turn right at the next intersection.</p>
+            </div>
+
+        </div>
+
+
+        <div class="direction">
+
+            <div class="direction-icon">🏁</div>
+
+            <div>
+                <strong>Destination</strong>
+                <p>You have reached your destination.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* SEARCH DESTINATION */
+
+function searchDestination() {
+
+    const input =
+        document.getElementById("destinationInput");
+
+    const destination =
+        input.value.trim();
+
+    if (destination === "") {
+
+        alert("Please enter a destination.");
+
+        return;
+    }
+
+    document.getElementById(
+        "destinationText"
+    ).innerHTML = destination;
+
+    document.getElementById(
+        "timeText"
+    ).innerHTML = "12 minutes";
+
+    alert(
+        "📍 Route found!\n\n" +
+        "Destination: " + destination
+    );
+
+}
+
+
+/* GET LOCATION */
+
+function getLocation() {
+
+    const locationText =
+        document.getElementById("locationText");
+
+    if (!navigator.geolocation) {
+
+        locationText.innerHTML =
+            "Geolocation is not supported.";
+
+        return;
+    }
+
+    locationText.innerHTML =
+        "Detecting location...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const lat =
+                position.coords.latitude.toFixed(4);
+
+            const lon =
+                position.coords.longitude.toFixed(4);
+
+            locationText.innerHTML =
+                "Latitude: " + lat +
+                "<br>Longitude: " + lon;
+
+        },
+
+        function() {
+
+            locationText.innerHTML =
+                "Unable to detect location.";
+
+        }
+
+    );
+
+}
+
+
+/* PAGE NAVIGATION */
+
+function goDashboard() {
+    window.location.href = "index.html";
+}
+
+function goCaptions() {
+    window.location.href = "captions.html";
+}
+
+function goAlerts() {
+    window.location.href = "alerts.html";
+}
+
+function goAnnouncements() {
+    window.location.href = "announcements.html";
+}
+
+function goCommunication() {
+    window.location.href = "communication.html";
+}
+
+</script>
+
+</body>
+</html>
+```
